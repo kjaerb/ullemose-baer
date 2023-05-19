@@ -8,31 +8,30 @@ import { AddMore } from "./AddMore";
 import { firestore } from "@/lib/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { cn } from "@/lib/cn";
-import {
-  FormProvider,
-  RegisterOptions,
-  UseFormRegisterReturn,
-  useForm,
-  useWatch,
-} from "react-hook-form";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Order, orderSchema } from "@/validators/orderSchema";
-import { useState } from "react";
 
 interface FormProps extends React.ComponentProps<"form"> {}
 
 export function Form({ className, ...props }: FormProps) {
-  const [orders, setOrders] = useState<Fruit[]>([{ name: "Ribs", kg: 10 }]);
-
   const methods = useForm<Order>({
     resolver: zodResolver(orderSchema),
+    defaultValues: {
+      fruitOrder: [{ name: "Solbær", kg: 5 }],
+    },
   });
 
-  const { register, handleSubmit } = methods;
+  const { register, handleSubmit, control } = methods;
 
-  const formValues = useWatch({ control: methods.control });
-
-  console.log(formValues);
+  const {
+    fields: orders,
+    append,
+    remove,
+  } = useFieldArray({
+    control,
+    name: "fruitOrder",
+  });
 
   return (
     <FormProvider {...methods}>
@@ -74,13 +73,13 @@ export function Form({ className, ...props }: FormProps) {
         </div>
         <p className='mx-auto mt-4'>Vælg bær og mængde.</p>
 
-        {orders.map((_, i) => (
+        {orders.map((order, i) => (
           <FruitSelector
             register={register}
             handleDelete={() => removeOrder(i)}
             canDeleteOrder={orders.length === 1}
             number={i}
-            key={i}
+            key={order.id}
           />
         ))}
 
@@ -109,47 +108,31 @@ export function Form({ className, ...props }: FormProps) {
   function addOrder() {
     const missingName = findFirstMissingName(orders);
 
-    console.log(missingName);
-
-    setOrders((orders) => [...orders, { name: "Ribs", kg: 5 }]);
+    append({ name: missingName ? missingName : "Solbær", kg: 5 });
   }
 
   function removeOrder(index: number) {
     if (orders.length === 1) return;
 
-    setOrders((orders) => orders.filter((_, i) => i !== index));
+    remove(index);
   }
 
   function onSubmit(data: Order) {
-    console.log("hello");
-    console.log(data);
+    const parsedOrders = orderSchema.safeParse(data);
+
+    if (!parsedOrders.success) {
+      console.log(parsedOrders.error);
+      return;
+    }
+
+    const ordersRef = collection(firestore, "orders");
+
+    addDoc(ordersRef, { ...parsedOrders.data, createdAt: Date.now() })
+      .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+      });
   }
-
-  // async function handleOrder(e: React.FormEvent<HTMLFormElement>) {
-  //   e.preventDefault();
-
-  //   const parsedOrders = fruitOrderSchema.safeParse(orders);
-  //   const parsedInfo = contactInfoSchema.safeParse(contactInfo);
-  //   console.log(orders, contactInfo);
-
-  //   if (!parsedOrders.success) {
-  //     console.log(parsedOrders.error);
-  //     return;
-  //   }
-
-  //   if (!parsedInfo.success) {
-  //     console.log(parsedInfo.error);
-  //     return;
-  //   }
-
-  //   const ordersRef = collection(firestore, "orders");
-
-  //   addDoc(ordersRef, { order: orders, contactInfo })
-  //     .then((docRef) => {
-  //       console.log("Document written with ID: ", docRef.id);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error adding document: ", error);
-  //     });
-  // }
 }
