@@ -1,51 +1,51 @@
-import clsx from "clsx";
-import { Fruit } from "@/validators/fruitSchema";
-import { ComponentProps } from "react";
+import { fruitNameArray } from "@/validators/fruitSchema";
+import { ComponentPropsWithRef } from "react";
+import { Trashcan } from "./svg/Trashcan";
+import { cn } from "@/lib/cn";
+import { UseFormRegister } from "react-hook-form";
+import { Order } from "@/validators/orderSchema";
 
-type FruitName = Fruit["name"];
+const kgRange = Array.from({ length: 7 }, (_, i) => i * 5).filter(
+  (i) => i !== 0
+);
 
-interface FruitSelectorProps extends ComponentProps<"div"> {
-  order: Fruit;
-  handleSelectChange: (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    index: number
-  ) => void;
-  index: number;
+interface FruitSelectorProps extends ComponentPropsWithRef<"select"> {
+  register: UseFormRegister<Order>;
+  handleDelete: () => void;
+  canDeleteOrder: boolean;
+  number: number;
 }
 
 export function FruitSelector({
-  order,
-  handleSelectChange,
-  index,
+  handleDelete,
+  canDeleteOrder,
+  number,
+  register,
   ...props
 }: FruitSelectorProps) {
-  const kgRange = Array.from({ length: 7 }, (_, i) => i * 5).filter(
-    (i) => i !== 0
-  );
-
-  const fruitNames: FruitName[] = ["-", "Solbær", "Ribs"];
-
   return (
-    <div {...props} className={clsx(["grid grid-cols-2", props.className])}>
+    <div className={cn("grid grid-cols-2", props.className)}>
       <select
-        className='fruit-selector'
-        name='name'
-        value={order.name}
-        onChange={(e) => handleSelectChange(e, index)}>
-        {fruitNames.map((fruit) => (
-          <option key={fruit}>{fruit}</option>
+        className='fruit-selector flex-1'
+        {...register(`fruitOrder.${number}.name`)}>
+        {fruitNameArray.map((fruit, i) => (
+          <option key={i}>{fruit}</option>
         ))}
       </select>
-
-      <select
-        className='fruit-selector'
-        name='kg'
-        value={order.kg}
-        onChange={(e) => handleSelectChange(e, index)}>
-        {kgRange.map((kg) => (
-          <option key={kg}>{kg}</option>
-        ))}
-      </select>
+      <div className='flex items-center'>
+        <select
+          className='fruit-selector flex-1'
+          {...register(`fruitOrder.${number}.kg`, { valueAsNumber: true })}>
+          {kgRange.map((kg, i) => (
+            <option key={i}>{kg}</option>
+          ))}
+        </select>
+        <Trashcan
+          onClick={handleDelete}
+          className='mr-4'
+          disabled={canDeleteOrder}
+        />
+      </div>
     </div>
   );
 }
