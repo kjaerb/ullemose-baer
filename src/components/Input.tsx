@@ -17,7 +17,7 @@ const Input = forwardRef<HTMLDivElement, InputProps>(
           className={cn(
             "px-4 py-2 border border-gray-300 shadow-md rounded-lg",
             props.className,
-            error?.message && "border-red-500 rounded-none rounded-t-lg"
+            error?.message && "border-red-500 border rounded-none rounded-t-lg"
           )}
         />
         {error?.message && (

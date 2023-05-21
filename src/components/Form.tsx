@@ -11,23 +11,24 @@ import { cn } from "@/lib/cn";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Order, orderSchema } from "@/validators/orderSchema";
+import { useRouter } from "next/navigation";
 
 interface FormProps extends React.ComponentProps<"form"> {}
 
 export function Form({ className, ...props }: FormProps) {
-  const methods = useForm<Order>({
-    resolver: zodResolver(orderSchema),
-    defaultValues: {
-      fruitOrder: [{ name: "Solbær", kg: 5 }],
-    },
-  });
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
-  } = methods;
+  } = useForm<Order>({
+    resolver: zodResolver(orderSchema),
+    defaultValues: {
+      fruitOrder: [{ name: "Solbær", kg: 5 }],
+    },
+  });
 
   const {
     fields: orders,
@@ -39,73 +40,71 @@ export function Form({ className, ...props }: FormProps) {
   });
 
   return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        {...props}
-        className={cn(
-          "flex flex-col shadow-md w-full rounded-md border p-4 my-4",
-          className
-        )}>
-        <p className='mx-auto mt-4 text-xl'>Indtast dine informationer</p>
-        <div className='grid grid-cols-1 sm:grid-cols-2'>
-          <Input
-            {...register("contactInfo.firstName")}
-            error={errors.contactInfo?.firstName}
-            label='Fornavn'
-            autoComplete='given-name'
-          />
-          <Input
-            {...register("contactInfo.lastName")}
-            error={errors.contactInfo?.lastName}
-            label='Efternavn'
-            autoComplete='family-name'
-          />
-        </div>
-        <div className='grid grid-cols-1 sm:grid-cols-2'>
-          <Input
-            {...register("contactInfo.email")}
-            error={errors.contactInfo?.email}
-            label='Email'
-            type='email'
-            autoComplete='email'
-          />
-          <Input
-            {...register("contactInfo.phone")}
-            error={errors.contactInfo?.phone}
-            label='Tlf nummer'
-            autoComplete='phone'
-            type='number'
-            inputMode='numeric'
-            pattern='[0-9]+'
-          />
-        </div>
-        <p className='mx-auto mt-4'>Vælg bær og mængde.</p>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      {...props}
+      className={cn(
+        "flex flex-col shadow-md w-full rounded-md border p-4 my-4",
+        className
+      )}>
+      <p className='mx-auto mt-4 text-xl'>Indtast dine informationer</p>
+      <div className='grid grid-cols-1 sm:grid-cols-2'>
+        <Input
+          {...register("contactInfo.firstName")}
+          error={errors.contactInfo?.firstName}
+          label='Fornavn'
+          autoComplete='given-name'
+        />
+        <Input
+          {...register("contactInfo.lastName")}
+          error={errors.contactInfo?.lastName}
+          label='Efternavn'
+          autoComplete='family-name'
+        />
+      </div>
+      <div className='grid grid-cols-1 sm:grid-cols-2'>
+        <Input
+          {...register("contactInfo.email")}
+          error={errors.contactInfo?.email}
+          label='Email'
+          type='email'
+          autoComplete='email'
+        />
+        <Input
+          {...register("contactInfo.phone")}
+          error={errors.contactInfo?.phone}
+          label='Tlf nummer'
+          autoComplete='phone'
+          type='number'
+          inputMode='numeric'
+          pattern='[0-9]+'
+        />
+      </div>
+      <p className='mx-auto mt-4'>Vælg bær og mængde.</p>
 
-        {orders.map((order, i) => (
-          <FruitSelector
-            register={register}
-            errors={{
-              error1: errors.fruitOrder?.[i]?.name,
-              error2: errors.fruitOrder?.[i]?.kg,
-            }}
-            handleDelete={() => removeOrder(i)}
-            canDeleteOrder={orders.length === 1}
-            number={i}
-            key={order.id}
-          />
-        ))}
+      {orders.map((order, i) => (
+        <FruitSelector
+          register={register}
+          errors={{
+            error1: errors.fruitOrder?.[i]?.name,
+            error2: errors.fruitOrder?.[i]?.kg,
+          }}
+          handleDelete={() => removeOrder(i)}
+          canDeleteOrder={orders.length === 1}
+          number={i}
+          key={order.id}
+        />
+      ))}
 
-        {orders.length < fruitNameArray.length && (
-          <div className='mx-auto'>
-            <AddMore className='mx-auto m-2' onClick={addOrder} />
-          </div>
-        )}
-        <Button aria-label='Send ordre' className='w-1/4 mx-auto' type='submit'>
-          Send
-        </Button>
-      </form>
-    </FormProvider>
+      {orders.length < fruitNameArray.length && (
+        <div className='mx-auto'>
+          <AddMore className='mx-auto m-2' onClick={addOrder} />
+        </div>
+      )}
+      <Button aria-label='Send ordre' className='w-1/4 mx-auto' type='submit'>
+        Send
+      </Button>
+    </form>
   );
 
   function findFirstMissingName(orders: Fruit[]) {
@@ -145,6 +144,7 @@ export function Form({ className, ...props }: FormProps) {
     addDoc(ordersRef, { ...parsedOrders.data, createdAt: Date.now() })
       .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);
+        router.push("/success");
       })
       .catch((error) => {
         console.error("Error adding document: ", error);

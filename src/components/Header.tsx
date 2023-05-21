@@ -9,7 +9,7 @@ export function Header() {
           alt={"Ullemose frugt"}
           width={768}
           height={300}
-          className='px-16'
+          className='lg:px-16 md:px-10 sm:px-2'
         />
       </div>
     </header>
