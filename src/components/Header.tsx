@@ -9,6 +9,7 @@ export function Header() {
           alt={"Ullemose frugt"}
           width={768}
           height={300}
+          className='px-16'
         />
       </div>
     </header>

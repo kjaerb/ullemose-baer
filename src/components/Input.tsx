@@ -1,22 +1,28 @@
-import clsx from "clsx";
+import { cn } from "@/lib/cn";
 import { ComponentPropsWithRef, forwardRef } from "react";
+import { FieldError } from "react-hook-form";
 
 interface InputProps extends ComponentPropsWithRef<"input"> {
   label?: string;
+  error?: FieldError;
 }
 
 const Input = forwardRef<HTMLDivElement, InputProps>(
-  ({ label, ...props }, ref) => {
+  ({ label, error, ...props }, ref) => {
     return (
       <div className='flex flex-col mx-4 my-2' ref={ref}>
         {label && <label className='mb-2'>{label}</label>}
         <input
           {...props}
-          className={clsx(
-            "px-4 py-2 border border-gray-300 shadow-md rounded-md ",
-            props.className
+          className={cn(
+            "px-4 py-2 border border-gray-300 shadow-md rounded-lg",
+            props.className,
+            error?.message && "border-red-500 rounded-none rounded-t-lg"
           )}
         />
+        {error?.message && (
+          <span className='error-message'>{error.message}</span>
+        )}
       </div>
     );
   }

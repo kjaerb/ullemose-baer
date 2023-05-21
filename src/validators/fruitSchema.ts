@@ -2,7 +2,11 @@ import { z } from "zod";
 
 const fruitSchema = z.object({
   name: z.enum(["Solbær", "Ribs"]),
-  kg: z.number().positive().min(5).max(30),
+  kg: z
+    .number()
+    .positive()
+    .min(5, "Du må minimum forudbestille 5kg")
+    .max(30, "Du kan maks forudbestille 30kg"),
 });
 
 const fruitNameArray = fruitSchema.shape.name._def.values;

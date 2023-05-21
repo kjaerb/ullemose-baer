@@ -22,7 +22,12 @@ export function Form({ className, ...props }: FormProps) {
     },
   });
 
-  const { register, handleSubmit, control } = methods;
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = methods;
 
   const {
     fields: orders,
@@ -43,27 +48,31 @@ export function Form({ className, ...props }: FormProps) {
           className
         )}>
         <p className='mx-auto mt-4 text-xl'>Indtast dine informationer</p>
-        <div className='grid grid-cols-2'>
+        <div className='grid grid-cols-1 sm:grid-cols-2'>
           <Input
             {...register("contactInfo.firstName")}
+            error={errors.contactInfo?.firstName}
             label='Fornavn'
             autoComplete='given-name'
           />
           <Input
             {...register("contactInfo.lastName")}
+            error={errors.contactInfo?.lastName}
             label='Efternavn'
             autoComplete='family-name'
           />
         </div>
-        <div className='grid grid-cols-2'>
+        <div className='grid grid-cols-1 sm:grid-cols-2'>
           <Input
             {...register("contactInfo.email")}
+            error={errors.contactInfo?.email}
             label='Email'
             type='email'
             autoComplete='email'
           />
           <Input
             {...register("contactInfo.phone")}
+            error={errors.contactInfo?.phone}
             label='Tlf nummer'
             autoComplete='phone'
             type='number'
@@ -76,6 +85,10 @@ export function Form({ className, ...props }: FormProps) {
         {orders.map((order, i) => (
           <FruitSelector
             register={register}
+            errors={{
+              error1: errors.fruitOrder?.[i]?.name,
+              error2: errors.fruitOrder?.[i]?.kg,
+            }}
             handleDelete={() => removeOrder(i)}
             canDeleteOrder={orders.length === 1}
             number={i}
@@ -84,7 +97,9 @@ export function Form({ className, ...props }: FormProps) {
         ))}
 
         {orders.length < fruitNameArray.length && (
-          <AddMore className='mx-auto m-2' onClick={addOrder} />
+          <div className='mx-auto'>
+            <AddMore className='mx-auto m-2' onClick={addOrder} />
+          </div>
         )}
         <Button aria-label='Send ordre' className='w-1/4 mx-auto' type='submit'>
           Send

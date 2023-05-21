@@ -2,13 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Abel', 'Roboto', sans-serif;
 }
 
 .fruit-selector {
     @apply mx-4 border shadow-md rounded-md px-4 py-2 my-2
+}
+
+.error-message {
+    @apply bg-red-200 text-red-500 px-2 py-1 text-sm shadow-md border border-t-0 border-red-500 rounded-b-lg
 }
