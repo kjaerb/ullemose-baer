@@ -8,7 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='dk'>
-      <body className='bg-white'>
+      <body>
         <main className='mx-auto max-w-3xl shadow-lg border rounded-md min-h-screen px-6'>
           <Header />
           {children}

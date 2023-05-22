@@ -8,10 +8,14 @@ import { AddMore } from "./AddMore";
 import { firestore } from "@/lib/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { cn } from "@/lib/cn";
-import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Order, orderSchema } from "@/validators/orderSchema";
 import { useRouter } from "next/navigation";
+import { sendEmail } from "@/lib/resend";
+import { render } from "@react-email/render";
+import UllemoseEmail from "@/react-email/emails/ullemose-confirm";
+import { nanoid } from "nanoid";
 
 interface FormProps extends React.ComponentProps<"form"> {}
 
@@ -119,7 +123,7 @@ export function Form({ className, ...props }: FormProps) {
     return null;
   }
 
-  function addOrder() {
+  async function addOrder() {
     const missingName = findFirstMissingName(orders);
 
     append({ name: missingName ? missingName : "Solbær", kg: 5 });
@@ -139,11 +143,19 @@ export function Form({ className, ...props }: FormProps) {
       return;
     }
 
+    const orderId = nanoid();
+
     const ordersRef = collection(firestore, "orders");
 
-    addDoc(ordersRef, { ...parsedOrders.data, createdAt: Date.now() })
-      .then((docRef) => {
+    addDoc(ordersRef, { ...parsedOrders.data, createdAt: Date.now(), orderId })
+      .then(async (docRef) => {
         console.log("Document written with ID: ", docRef.id);
+
+        await sendEmail({
+          to: [data.contactInfo.email],
+          react: <UllemoseEmail order={data} orderId={orderId} />,
+        });
+
         router.push("/success");
       })
       .catch((error) => {

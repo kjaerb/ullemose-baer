@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+*/node_modules
+src/react-email/node_modules
+src/react-email/.react-email
+
 # testing
 /coverage
 

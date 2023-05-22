@@ -8,7 +8,7 @@ interface InputProps extends ComponentPropsWithRef<"input"> {
 }
 
 const Input = forwardRef<HTMLDivElement, InputProps>(
-  ({ label, error, ...props }, ref) => {
+  ({ label, error, className, ...props }, ref) => {
     return (
       <div className='flex flex-col mx-4 my-2' ref={ref}>
         {label && <label className='mb-2'>{label}</label>}
@@ -16,7 +16,7 @@ const Input = forwardRef<HTMLDivElement, InputProps>(
           {...props}
           className={cn(
             "px-4 py-2 border border-gray-300 shadow-md rounded-lg",
-            props.className,
+            className,
             error?.message && "border-red-500 border rounded-none rounded-t-lg"
           )}
         />
