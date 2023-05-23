@@ -21,6 +21,8 @@ interface FormProps extends React.ComponentProps<"form"> {}
 export function Form({ className, ...props }: FormProps) {
   const router = useRouter();
 
+  const ordersRef = collection(firestore, "orders");
+
   const {
     register,
     handleSubmit,
@@ -134,7 +136,7 @@ export function Form({ className, ...props }: FormProps) {
     remove(index);
   }
 
-  function onSubmit(data: Order) {
+  async function onSubmit(data: Order) {
     try {
       const parsedOrders = orderSchema.safeParse(data);
 
@@ -145,9 +147,7 @@ export function Form({ className, ...props }: FormProps) {
 
       const orderId = nanoid();
 
-      const ordersRef = collection(firestore, "orders");
-
-      addDoc(ordersRef, {
+      await addDoc(ordersRef, {
         ...parsedOrders.data,
         createdAt: Date.now(),
         orderId,
@@ -159,12 +159,12 @@ export function Form({ className, ...props }: FormProps) {
           //   to: [data.contactInfo.email],
           //   react: <UllemoseEmail order={data} orderId={orderId} />,
           // });
-
-          router.push("/success");
         })
         .catch((error) => {
           console.error("Error adding document: ", error);
         });
+
+      router.push("/success");
     } catch (ex) {
       console.error(ex);
     }
