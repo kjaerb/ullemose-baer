@@ -12,7 +12,6 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Order, orderSchema } from "@/validators/orderSchema";
 import { useRouter } from "next/navigation";
-import { sendEmail } from "@/lib/resend";
 import { render } from "@react-email/render";
 import UllemoseEmail from "@/react-email/emails/ullemose-confirm";
 import { nanoid } from "nanoid";
@@ -136,30 +135,38 @@ export function Form({ className, ...props }: FormProps) {
   }
 
   function onSubmit(data: Order) {
-    const parsedOrders = orderSchema.safeParse(data);
+    try {
+      const parsedOrders = orderSchema.safeParse(data);
 
-    if (!parsedOrders.success) {
-      console.log(parsedOrders.error);
-      return;
-    }
+      if (!parsedOrders.success) {
+        console.log(parsedOrders.error);
+        return;
+      }
 
-    const orderId = nanoid();
+      const orderId = nanoid();
 
-    const ordersRef = collection(firestore, "orders");
+      const ordersRef = collection(firestore, "orders");
 
-    addDoc(ordersRef, { ...parsedOrders.data, createdAt: Date.now(), orderId })
-      .then(async (docRef) => {
-        console.log("Document written with ID: ", docRef.id);
-
-        await sendEmail({
-          to: [data.contactInfo.email],
-          react: <UllemoseEmail order={data} orderId={orderId} />,
-        });
-
-        router.push("/success");
+      addDoc(ordersRef, {
+        ...parsedOrders.data,
+        createdAt: Date.now(),
+        orderId,
       })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      });
+        .then(async (docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+
+          // await sendEmail({
+          //   to: [data.contactInfo.email],
+          //   react: <UllemoseEmail order={data} orderId={orderId} />,
+          // });
+
+          router.push("/success");
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
+    } catch (ex) {
+      console.error(ex);
+    }
   }
 }
