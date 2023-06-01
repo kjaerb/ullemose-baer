@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   const confirmationEmailBody = sendConfirmationEmailSchema.safeParse(body);
 
   if (!confirmationEmailBody.success) {
-    return NextResponse.json({ data: "error" }, { status: 400 });
+    return new Response(JSON.stringify({ data: "error" }), { status: 400 });
   }
 
   const { to, html } = confirmationEmailBody.data;
@@ -27,9 +27,9 @@ export async function POST(request: NextRequest) {
 
   try {
     await transporter.sendMail(mailOptions);
-    return NextResponse.json({ data: "success" }, { status: 200 });
+    return new Response(JSON.stringify({ data: "success" }));
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ data: "error" }, { status: 500 });
+    return new Response(JSON.stringify({ data: "error" }), { status: 500 });
   }
 }
