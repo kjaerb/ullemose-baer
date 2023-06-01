@@ -178,7 +178,15 @@ export function Form({ className, ...props }: FormProps) {
       };
 
       await axios
-        .post("/api/sendConfirmationEmail", confirmationEmailDetails)
+        .post("/api/sendConfirmationEmail", {
+          header: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST",
+          },
+          confirmationEmailDetails,
+        })
         .then((res) => {
           console.log(res);
         })
