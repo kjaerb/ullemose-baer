@@ -177,12 +177,9 @@ export function Form({ className, ...props }: FormProps) {
         ),
       };
 
-      await axios
-        .get("/api/sendConfirmationEmail")
-        .then((res) => console.log(res))
-        .catch((error) => {
-          console.log("Failed to send email", error);
-        });
+      await axios.post("/api", confirmationEmailDetails).catch(() => {
+        console.log("Failed to send email");
+      });
       router.push("/success");
     } catch (ex) {
       alert("Der skete en fejl, prøv igen senere");
