@@ -8,28 +8,29 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
+  return new Response("Nice post request!");
+  // const body = await request.json();
 
-  const confirmationEmailBody = sendConfirmationEmailSchema.safeParse(body);
+  // const confirmationEmailBody = sendConfirmationEmailSchema.safeParse(body);
 
-  if (!confirmationEmailBody.success) {
-    return new Response(JSON.stringify({ data: "error" }), { status: 400 });
-  }
+  // if (!confirmationEmailBody.success) {
+  //   return new Response(JSON.stringify({ data: "error" }), { status: 400 });
+  // }
 
-  const { to, html } = confirmationEmailBody.data;
+  // const { to, html } = confirmationEmailBody.data;
 
-  const mailOptions: Mail.Options = {
-    from: process.env.NEXT_PUBLIC_EMAIL,
-    to,
-    subject: "Tak for din bestilling",
-    html,
-  };
+  // const mailOptions: Mail.Options = {
+  //   from: process.env.NEXT_PUBLIC_EMAIL,
+  //   to,
+  //   subject: "Tak for din bestilling",
+  //   html,
+  // };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    return new Response(JSON.stringify({ data: "success" }));
-  } catch (error) {
-    console.error(error);
-    return new Response(JSON.stringify({ data: "error" }), { status: 500 });
-  }
+  // try {
+  //   await transporter.sendMail(mailOptions);
+  //   return new Response(JSON.stringify({ data: "success" }));
+  // } catch (error) {
+  //   console.error(error);
+  //   return new Response(JSON.stringify({ data: "error" }), { status: 500 });
+  // }
 }

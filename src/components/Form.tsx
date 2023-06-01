@@ -177,12 +177,14 @@ export function Form({ className, ...props }: FormProps) {
         ),
       };
 
-      await fetch("/api/sendConfirmationEmail", {
+      fetch("/api/sendConfirmationEmail", {
         method: "POST",
         body: JSON.stringify(confirmationEmailDetails),
-      }).catch((error) => {
-        console.log("Failed to send email", error);
-      });
+      })
+        .then((res) => console.log(res))
+        .catch((error) => {
+          console.log("Failed to send email", error);
+        });
       router.push("/success");
     } catch (ex) {
       alert("Der skete en fejl, prøv igen senere");
