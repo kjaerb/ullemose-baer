@@ -178,11 +178,6 @@ export function Form({ className, ...props }: FormProps) {
       };
 
       await axios
-        .get("/api")
-        .then((res) => console.log(res))
-        .catch((error) => console.log(error));
-
-      await axios
         .get("/api/sendConfirmationEmail")
         .then((res) => console.log(res))
         .catch((error) => {
