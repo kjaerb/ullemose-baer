@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Mail from "nodemailer/lib/mailer";
 
 export async function GET() {
-  return new Response("Nice get request!");
+  return NextResponse.json("Nice get request!");
 }
 
 export async function POST(request: NextRequest) {
