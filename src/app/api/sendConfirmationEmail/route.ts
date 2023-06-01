@@ -1,9 +1,13 @@
 import transporter from "@/lib/nodemailer";
 import { sendConfirmationEmailSchema } from "@/validators/sendConfirmationEmail";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Mail from "nodemailer/lib/mailer";
 
-export async function POST(request: Request) {
+export async function GET() {
+  return new Response("Nice get request!");
+}
+
+export async function POST(request: NextRequest) {
   const body = await request.json();
 
   const confirmationEmailBody = sendConfirmationEmailSchema.safeParse(body);
@@ -23,7 +27,7 @@ export async function POST(request: Request) {
 
   try {
     await transporter.sendMail(mailOptions);
-    return NextResponse.json({ data: "success" });
+    return NextResponse.json({ data: "success" }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ data: "error" }, { status: 500 });

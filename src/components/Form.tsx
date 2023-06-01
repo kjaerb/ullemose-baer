@@ -177,23 +177,12 @@ export function Form({ className, ...props }: FormProps) {
         ),
       };
 
-      await axios
-        .post("/api/sendConfirmationEmail", {
-          header: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST",
-          },
-          confirmationEmailDetails,
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          console.log("Failed to send email", error);
-        });
-
+      await fetch("/api/sendConfirmationEmail", {
+        method: "POST",
+        body: JSON.stringify(confirmationEmailDetails),
+      }).catch((error) => {
+        console.log("Failed to send email", error);
+      });
       router.push("/success");
     } catch (ex) {
       alert("Der skete en fejl, prøv igen senere");
