@@ -14,13 +14,17 @@ import { Order, orderSchema } from "@/validators/orderSchema";
 import { useRouter } from "next/navigation";
 import { render } from "@react-email/render";
 import UllemoseEmail from "@/react-email/emails/ullemose-confirm";
-import { nanoid } from "nanoid";
+import { useState } from "react";
+import { Loading } from "./Loading";
+import axios from "axios";
+import { ConfirmationEmail } from "@/validators/sendConfirmationEmail";
+import { orderNumberGenerator } from "@/lib/orderNumber";
 
 interface FormProps extends React.ComponentProps<"form"> {}
 
 export function Form({ className, ...props }: FormProps) {
   const router = useRouter();
-
+  const [loading, setLoading] = useState(false);
   const ordersRef = collection(firestore, "orders");
 
   const {
@@ -106,8 +110,15 @@ export function Form({ className, ...props }: FormProps) {
           <AddMore className='mx-auto m-2' onClick={addOrder} />
         </div>
       )}
-      <Button aria-label='Send ordre' className='w-1/4 mx-auto' type='submit'>
-        Send
+      <Button
+        aria-label='Send ordre'
+        className={cn(
+          "w-1/4 mx-auto",
+          loading && "cursor-not-allowed bg-gray-500 hover:bg-gray-600"
+        )}
+        type='submit'
+        disabled={loading}>
+        {loading ? <Loading /> : "Send"}
       </Button>
     </form>
   );
@@ -138,6 +149,7 @@ export function Form({ className, ...props }: FormProps) {
 
   async function onSubmit(data: Order) {
     try {
+      setLoading(true);
       const parsedOrders = orderSchema.safeParse(data);
 
       if (!parsedOrders.success) {
@@ -148,18 +160,38 @@ export function Form({ className, ...props }: FormProps) {
       const newOrder = {
         ...parsedOrders.data,
         createdAt: serverTimestamp(),
-        orderId: nanoid(),
+        orderId: orderNumberGenerator(),
       };
 
       await addDoc(ordersRef, newOrder).catch((error) => {
         console.error("Error adding document: ", error);
       });
 
-      console.log("Document written with ID: ", newOrder.orderId);
+      const confirmationEmailDetails: ConfirmationEmail = {
+        to: newOrder.contactInfo.email,
+        html: render(
+          <UllemoseEmail
+            order={newOrder}
+            orderId={newOrder.orderId.toString()}
+          />
+        ),
+      };
+
+      await axios
+        .post("/api/sendConfirmationEmail", confirmationEmailDetails)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log("Failed to send email", error);
+        });
 
       router.push("/success");
     } catch (ex) {
+      alert("Der skete en fejl, prøv igen senere");
       console.error(ex);
+    } finally {
+      setLoading(false);
     }
   }
 }

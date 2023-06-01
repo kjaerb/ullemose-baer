@@ -18,8 +18,8 @@ import {
 import * as React from "react";
 
 interface UllemoseEmailProps {
-  order?: Order;
-  orderId?: string;
+  order: Order;
+  orderId: string;
 }
 
 export default function UllemoseEmail({
@@ -34,14 +34,19 @@ export default function UllemoseEmail({
   },
   orderId = "placeholderId",
 }: UllemoseEmailProps) {
+  const replyEmail = process.env.NEXT_PUBLIC_EMAIL;
+
   return (
     <Tailwind>
       <Html>
         <Head />
-        <Preview>Tak for din bestilling</Preview>
         <Body style={main}>
           <Container style={container}>
-            <Img src={`/logo.png`} alt='Ullemose frugt' className='mx-auto' />
+            <Img
+              src='https://www.ullemose.dk/CustomerData/Files/Templates/1/logo.png'
+              alt='Ullemose frugt'
+              className='mx-auto'
+            />
             <Hr style={hr} />
             <Section style={box}>
               <Heading style={paragraph} className='text-center'>
@@ -89,13 +94,12 @@ export default function UllemoseEmail({
               <Text style={paragraph}>
                 Hvis du har nogle spørgsmål til din ordre, er du velkommen til
                 at skrive en mail til{" "}
-                <Link
-                  href='mailto:ullemosefrugt@gmail.com'
-                  className='text-blue-500'>
+                <Link href={`mailto:${replyEmail}`} className='text-blue-500'>
                   ullemosefrugt@gmail.com
                 </Link>
-                . Husk at oplyse dit ordre nummer.
+                .
               </Text>
+              <Text style={paragraph}>Husk at oplyse dit ordre nummer.</Text>
             </Section>
           </Container>
         </Body>
