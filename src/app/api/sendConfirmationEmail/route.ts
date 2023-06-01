@@ -8,7 +8,7 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  return new Response("Nice post request!");
+  return NextResponse.json({ data: "success" });
   // const body = await request.json();
 
   // const confirmationEmailBody = sendConfirmationEmailSchema.safeParse(body);
