@@ -11,7 +11,7 @@ export default function SuccessPage() {
       </p>
       <p className='mt-4'>
         Pågrund af skiftene forhold, kan vi ikke garantere at alle får deres
-        ordre. Vi gør vores bedste for at nå i mål ordre.
+        ordre. Vi gør vores bedste for at nå i mål med alle ordre.
       </p>
     </div>
   );

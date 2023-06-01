@@ -5,8 +5,8 @@ import { Input } from "./Input";
 import { FruitSelector } from "./FruitSelector";
 import { Fruit, fruitNameArray } from "@/validators/fruitSchema";
 import { AddMore } from "./AddMore";
-import { firestore } from "@/lib/firebase";
-import { addDoc, collection } from "firebase/firestore";
+import firestore from "@/lib/firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { cn } from "@/lib/cn";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -145,24 +145,17 @@ export function Form({ className, ...props }: FormProps) {
         return;
       }
 
-      const orderId = nanoid();
-
-      await addDoc(ordersRef, {
+      const newOrder = {
         ...parsedOrders.data,
-        createdAt: Date.now(),
-        orderId,
-      })
-        .then(async (docRef) => {
-          console.log("Document written with ID: ", docRef.id);
+        createdAt: serverTimestamp(),
+        orderId: nanoid(),
+      };
 
-          // await sendEmail({
-          //   to: [data.contactInfo.email],
-          //   react: <UllemoseEmail order={data} orderId={orderId} />,
-          // });
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
+      await addDoc(ordersRef, newOrder).catch((error) => {
+        console.error("Error adding document: ", error);
+      });
+
+      console.log("Document written with ID: ", newOrder.orderId);
 
       router.push("/success");
     } catch (ex) {
