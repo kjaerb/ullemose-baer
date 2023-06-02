@@ -163,9 +163,7 @@ export function Form({ className, ...props }: FormProps) {
         orderId: orderNumberGenerator(),
       };
 
-      await addDoc(ordersRef, newOrder).catch((error) => {
-        console.error("Error adding document: ", error);
-      });
+      await addDoc(ordersRef, newOrder);
 
       const confirmationEmailDetails: ConfirmationEmail = {
         to: newOrder.contactInfo.email,
@@ -177,17 +175,11 @@ export function Form({ className, ...props }: FormProps) {
         ),
       };
 
-      await axios
-        .post("/api/sendConfirmationEmail", confirmationEmailDetails)
-        .then((res) => console.log(res))
-        .catch((err) => {
-          console.log("Failed to send email", err);
-        });
+      await axios.post("/api/sendConfirmationEmail", confirmationEmailDetails);
+
       router.push("/success");
     } catch (ex) {
       alert("Der skete en fejl, prøv igen senere");
-      console.error(ex);
-    } finally {
       setLoading(false);
     }
   }
