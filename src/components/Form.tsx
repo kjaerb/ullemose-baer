@@ -14,7 +14,7 @@ import { Order, orderSchema } from "@/validators/orderSchema";
 import { useRouter } from "next/navigation";
 import { render } from "@react-email/render";
 import UllemoseEmail from "@/react-email/emails/ullemose-confirm";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Loading } from "./Loading";
 import axios from "axios";
 import { ConfirmationEmail } from "@/validators/sendConfirmationEmail";
@@ -26,15 +26,6 @@ export function Form({ className, ...props }: FormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const ordersRef = collection(firestore, "orders");
-
-  useEffect(() => {
-    function getGet() {
-      axios.get("/api/sendConfirmationEmail").then((res) => console.log(res));
-      axios.get("/api").then((res) => console.log(res));
-    }
-
-    getGet();
-  }, []);
 
   const {
     register,
