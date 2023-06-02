@@ -178,7 +178,7 @@ export function Form({ className, ...props }: FormProps) {
       };
 
       await axios
-        .post("/api/sendConfirmationEmail")
+        .post("/api/sendConfirmationEmail", confirmationEmailDetails)
         .then((res) => console.log(res))
         .catch((err) => {
           console.log("Failed to send email", err);
