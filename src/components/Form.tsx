@@ -180,8 +180,8 @@ export function Form({ className, ...props }: FormProps) {
       await axios
         .post("/api/sendConfirmationEmail")
         .then((res) => console.log(res))
-        .catch(() => {
-          console.log("Failed to send email");
+        .catch((err) => {
+          console.log("Failed to send email", err);
         });
       router.push("/success");
     } catch (ex) {
