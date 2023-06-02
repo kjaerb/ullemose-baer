@@ -14,7 +14,7 @@ import { Order, orderSchema } from "@/validators/orderSchema";
 import { useRouter } from "next/navigation";
 import { render } from "@react-email/render";
 import UllemoseEmail from "@/react-email/emails/ullemose-confirm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loading } from "./Loading";
 import axios from "axios";
 import { ConfirmationEmail } from "@/validators/sendConfirmationEmail";
@@ -26,6 +26,15 @@ export function Form({ className, ...props }: FormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const ordersRef = collection(firestore, "orders");
+
+  useEffect(() => {
+    async function getGet() {
+      const res = await axios.get("/api/sendConfirmationEmail");
+      console.log(res);
+    }
+
+    getGet();
+  }, []);
 
   const {
     register,
@@ -177,9 +186,12 @@ export function Form({ className, ...props }: FormProps) {
         ),
       };
 
-      await axios.get("/api").catch(() => {
-        console.log("Failed to send email");
-      });
+      await axios
+        .post("/api/sendConfirmationEmail")
+        .then((res) => console.log(res))
+        .catch(() => {
+          console.log("Failed to send email");
+        });
       router.push("/success");
     } catch (ex) {
       alert("Der skete en fejl, prøv igen senere");

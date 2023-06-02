@@ -7,7 +7,9 @@ export async function GET() {
   return NextResponse.json("Nice get request!");
 }
 
-export async function POST(request: NextRequest) {
+export async function HEAD(request: Request) {}
+
+export async function POST(request: Request) {
   const body = await request.json();
 
   const confirmationEmailBody = sendConfirmationEmailSchema.safeParse(body);
@@ -33,3 +35,12 @@ export async function POST(request: NextRequest) {
     return new Response(JSON.stringify({ data: "error" }), { status: 500 });
   }
 }
+
+export async function PUT(request: Request) {}
+
+export async function DELETE(request: Request) {}
+
+export async function PATCH(request: Request) {}
+
+// If `OPTIONS` is not defined, Next.js will automatically implement `OPTIONS` and  set the appropriate Response `Allow` header depending on the other methods defined in the route handler.
+export async function OPTIONS(request: Request) {}
