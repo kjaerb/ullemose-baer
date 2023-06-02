@@ -28,9 +28,9 @@ export function Form({ className, ...props }: FormProps) {
   const ordersRef = collection(firestore, "orders");
 
   useEffect(() => {
-    async function getGet() {
-      const res = await axios.get("/api/sendConfirmationEmail");
-      console.log(res);
+    function getGet() {
+      axios.get("/api/sendConfirmationEmail").then((res) => console.log(res));
+      axios.get("/api").then((res) => console.log(res));
     }
 
     getGet();
