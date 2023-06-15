@@ -5,12 +5,12 @@ import { Input } from "./Input";
 import { FruitSelector } from "./FruitSelector";
 import { Fruit, fruitNameArray } from "@/validators/fruitSchema";
 import { AddMore } from "./AddMore";
-import firestore from "@/lib/firebase";
+import { firestore } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { cn } from "@/lib/cn";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Order, orderSchema } from "@/validators/orderSchema";
+import { FirebaseOrder, Order, orderSchema } from "@/validators/orderSchema";
 import { useRouter } from "next/navigation";
 import { render } from "@react-email/render";
 import UllemoseEmail from "@/react-email/emails/ullemose-confirm";
@@ -105,11 +105,10 @@ export function Form({ className, ...props }: FormProps) {
         />
       ))}
 
-      {orders.length < fruitNameArray.length && (
-        <div className='mx-auto'>
-          <AddMore className='mx-auto m-2' onClick={addOrder} />
-        </div>
-      )}
+      <div className='mx-auto'>
+        <AddMore className='mx-auto m-2' onClick={addOrder} />
+      </div>
+
       <Button
         aria-label='Send ordre'
         className={cn(
@@ -157,9 +156,9 @@ export function Form({ className, ...props }: FormProps) {
         return;
       }
 
-      const newOrder = {
+      const newOrder: FirebaseOrder = {
         ...parsedOrders.data,
-        createdAt: serverTimestamp(),
+        createdAt: serverTimestamp().toString(),
         orderId: orderNumberGenerator(),
       };
 

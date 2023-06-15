@@ -7,8 +7,15 @@ const orderSchema = z.object({
   fruitOrder: z.array(fruitSchema),
 });
 
+const firebaseOrderSchema = orderSchema.extend({
+  orderId: z.number(),
+  createdAt: z.string(),
+});
+
 type Order = z.infer<typeof orderSchema>;
 
-export { orderSchema };
+type FirebaseOrder = z.infer<typeof firebaseOrderSchema>;
 
-export type { Order };
+export { orderSchema, firebaseOrderSchema };
+
+export type { Order, FirebaseOrder };

@@ -5,7 +5,7 @@ export function Header() {
   return (
     <header>
       <div className='my-4 pb-4 border-b border-b-gray-500'>
-        <Link href='/'>
+        <Link href='/admin'>
           <Image
             src={"/logo.png"}
             alt={"Ullemose frugt"}
