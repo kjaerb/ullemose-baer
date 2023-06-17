@@ -1,4 +1,4 @@
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 import { ComponentPropsWithRef, forwardRef } from "react";
 import { FieldError } from "react-hook-form";
 
@@ -10,8 +10,8 @@ interface InputProps extends ComponentPropsWithRef<"input"> {
 const Input = forwardRef<HTMLDivElement, InputProps>(
   ({ label, error, className, ...props }, ref) => {
     return (
-      <div className='flex flex-col mx-4 my-2' ref={ref}>
-        {label && <label className='mb-2'>{label}</label>}
+      <div className="flex flex-col mx-4 my-2" ref={ref}>
+        {label && <label className="mb-2">{label}</label>}
         <input
           {...props}
           className={cn(
@@ -21,7 +21,7 @@ const Input = forwardRef<HTMLDivElement, InputProps>(
           )}
         />
         {error?.message && (
-          <span className='error-message'>{error.message}</span>
+          <span className="error-message">{error.message}</span>
         )}
       </div>
     );

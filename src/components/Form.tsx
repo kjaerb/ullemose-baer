@@ -7,7 +7,7 @@ import { Fruit, fruitNameArray } from "@/validators/fruitSchema";
 import { AddMore } from "./AddMore";
 import { firestore } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FirebaseOrder, Order, orderSchema } from "@/validators/orderSchema";
@@ -55,41 +55,42 @@ export function Form({ className, ...props }: FormProps) {
       className={cn(
         "flex flex-col shadow-md w-full rounded-md border p-4 my-4",
         className
-      )}>
-      <p className='mx-auto mt-4 text-xl'>Indtast dine informationer</p>
-      <div className='grid grid-cols-1 sm:grid-cols-2'>
+      )}
+    >
+      <p className="mx-auto mt-4 text-xl">Indtast dine informationer</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2">
         <Input
           {...register("contactInfo.firstName")}
           error={errors.contactInfo?.firstName}
-          label='Fornavn'
-          autoComplete='given-name'
+          label="Fornavn"
+          autoComplete="given-name"
         />
         <Input
           {...register("contactInfo.lastName")}
           error={errors.contactInfo?.lastName}
-          label='Efternavn'
-          autoComplete='family-name'
+          label="Efternavn"
+          autoComplete="family-name"
         />
       </div>
-      <div className='grid grid-cols-1 sm:grid-cols-2'>
+      <div className="grid grid-cols-1 sm:grid-cols-2">
         <Input
           {...register("contactInfo.email")}
           error={errors.contactInfo?.email}
-          label='Email'
-          type='email'
-          autoComplete='email'
+          label="Email"
+          type="email"
+          autoComplete="email"
         />
         <Input
           {...register("contactInfo.phone")}
           error={errors.contactInfo?.phone}
-          label='Tlf nummer'
-          autoComplete='phone'
-          type='number'
-          inputMode='numeric'
-          pattern='[0-9]+'
+          label="Tlf nummer"
+          autoComplete="phone"
+          type="number"
+          inputMode="numeric"
+          pattern="[0-9]+"
         />
       </div>
-      <p className='mx-auto mt-4'>Vælg bær og mængde.</p>
+      <p className="mx-auto mt-4">Vælg bær og mængde.</p>
 
       {orders.map((order, i) => (
         <FruitSelector
@@ -105,18 +106,19 @@ export function Form({ className, ...props }: FormProps) {
         />
       ))}
 
-      <div className='mx-auto'>
-        <AddMore className='mx-auto m-2' onClick={addOrder} />
+      <div className="mx-auto">
+        <AddMore className="mx-auto m-2" onClick={addOrder} />
       </div>
 
       <Button
-        aria-label='Send ordre'
+        aria-label="Send ordre"
         className={cn(
           "w-1/4 mx-auto",
           loading && "cursor-not-allowed bg-gray-500 hover:bg-gray-600"
         )}
-        type='submit'
-        disabled={loading}>
+        type="submit"
+        disabled={loading}
+      >
         {loading ? <Loading /> : "Send"}
       </Button>
     </form>
@@ -158,7 +160,7 @@ export function Form({ className, ...props }: FormProps) {
 
       const newOrder: FirebaseOrder = {
         ...parsedOrders.data,
-        createdAt: serverTimestamp().toString(),
+        createdAt: serverTimestamp(),
         orderId: orderNumberGenerator(),
       };
 
@@ -179,6 +181,7 @@ export function Form({ className, ...props }: FormProps) {
       router.push("/success");
     } catch (ex) {
       alert("Der skete en fejl, prøv igen senere");
+    } finally {
       setLoading(false);
     }
   }

@@ -17,16 +17,22 @@ export async function POST(request: Request) {
       return new Response(JSON.stringify({ data: "error" }), { status: 400 });
     }
 
+    console.log(process.env.NODE_ENV)
+
     const { to, html } = confirmationEmailBody.data;
 
-    const mailOptions: Mail.Options = {
-      from: process.env.NEXT_PUBLIC_EMAIL,
-      to,
-      subject: "Tak for din bestilling",
-      html,
-    };
+    if(process.env.NODE_ENV === "production") {
+      const mailOptions: Mail.Options = {
+        from: process.env.NEXT_PUBLIC_EMAIL,
+        to,
+        subject: "Tak for din bestilling",
+        html,
+      };
 
-    await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
+    }
+
+
     return new Response(JSON.stringify({ data: "success" }));
   } catch (error) {
     console.error(error);

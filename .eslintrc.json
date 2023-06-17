@@ -1,3 +1,6 @@
 {
-  "extends": "next/core-web-vitals"
-}
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "eslint.validate": ["typescript", "typescriptreact", "javascript", "javascriptreact"]
+ }

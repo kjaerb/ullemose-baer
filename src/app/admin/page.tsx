@@ -1,12 +1,13 @@
 "use client";
 
+import { AccountMenu } from "@/components/AccountMenu";
 import { Login } from "@/components/Login";
 import { OrdersTable } from "@/components/OrdersTable";
 import { SignOut } from "@/components/SignOut";
 import { firebaseOrdersColumns } from "@/components/Table/Columns/FirebaseOrdersColumns";
 import { authentication, firestore } from "@/lib/firebase";
-import { FirebaseOrder } from "@/validators/orderSchema";
-import { collection, getDocs } from "firebase/firestore";
+import { FirebaseOrder, firebaseOrderSchema } from "@/validators/orderSchema";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -14,9 +15,13 @@ export default function AdminPage() {
   const [user] = useAuthState(authentication);
 
   const [orders, setOrders] = useState<FirebaseOrder[]>([]);
-  const ordersRef = collection(firestore, "orders");
+
   const getOrders = async () => {
-    const ordersSnapshot = await getDocs(ordersRef);
+    const q = query(
+      collection(firestore, "orders"),
+      orderBy("createdAt", "desc")
+    );
+    const ordersSnapshot = await getDocs(q);
     const ordersList = ordersSnapshot.docs.map((doc) => doc.data());
     setOrders(() => {
       return ordersList as FirebaseOrder[];
@@ -28,19 +33,16 @@ export default function AdminPage() {
   }, []);
 
   return (
-    <div className='flex justify-center flex-col'>
+    <div className="flex justify-center flex-col">
       {user ? (
         <>
-          <div className='flex justify-between items-center'>
-            <p>Welcome {user?.displayName}</p>
-            <SignOut />
+          <div className="flex justify-end items-center flex-wrap">
+            <AccountMenu name={user.displayName} />
           </div>
           <OrdersTable columns={firebaseOrdersColumns} data={orders} />
         </>
       ) : (
-        <>
-          <Login />
-        </>
+        <Login />
       )}
     </div>
   );
