@@ -31,6 +31,7 @@ export default function UllemoseEmail({
       phone: "00000000",
     },
     fruitOrder: [{ name: "Solbær", kg: 5 }],
+    termsAccepted: false,
   },
   orderId = "placeholderId",
 }: UllemoseEmailProps) {
@@ -43,13 +44,13 @@ export default function UllemoseEmail({
         <Body style={main}>
           <Container style={container}>
             <Img
-              src='https://www.ullemose.dk/CustomerData/Files/Templates/1/logo.png'
-              alt='Ullemose frugt'
-              className='mx-auto'
+              src="https://www.ullemose.dk/CustomerData/Files/Templates/1/logo.png"
+              alt="Ullemose frugt"
+              className="mx-auto"
             />
             <Hr style={hr} />
             <Section style={box}>
-              <Heading style={paragraph} className='text-center'>
+              <Heading style={paragraph} className="text-center">
                 Hej {order?.contactInfo.firstName}, Tak for din bestilling
               </Heading>
               <Text style={paragraph}>
@@ -66,25 +67,25 @@ export default function UllemoseEmail({
             </Section>
             <Hr style={hr} />
             <Section style={box}>
-              <Heading style={paragraph} className='text-center'>
+              <Heading style={paragraph} className="text-center">
                 Ordre nummer: {orderId}
               </Heading>
 
               <Row>
-                <Column className='w-1/2'>
-                  <Text className='flex justify-center font-bold'>Bær</Text>
+                <Column className="w-1/2">
+                  <Text className="flex justify-center font-bold">Bær</Text>
                 </Column>
-                <Column className='w-1/2'>
-                  <Text className='flex justify-center font-bold'>Kg</Text>
+                <Column className="w-1/2">
+                  <Text className="flex justify-center font-bold">Kg</Text>
                 </Column>
               </Row>
               {order.fruitOrder.map((fruit, i) => (
                 <Row key={i}>
-                  <Column className='w-1/2'>
-                    <Text className='flex justify-center'>{fruit.name}</Text>
+                  <Column className="w-1/2">
+                    <Text className="flex justify-center">{fruit.name}</Text>
                   </Column>
-                  <Column className='w-1/2'>
-                    <Text className='flex justify-center'>{fruit.kg} Kg</Text>
+                  <Column className="w-1/2">
+                    <Text className="flex justify-center">{fruit.kg} Kg</Text>
                   </Column>
                 </Row>
               ))}
@@ -94,7 +95,7 @@ export default function UllemoseEmail({
               <Text style={paragraph}>
                 Hvis du har nogle spørgsmål til din ordre, er du velkommen til
                 at skrive en mail til{" "}
-                <Link href={`mailto:${replyEmail}`} className='text-blue-500'>
+                <Link href={`mailto:${replyEmail}`} className="text-blue-500">
                   ullemosefrugt@gmail.com
                 </Link>
                 .

@@ -118,11 +118,8 @@ export function Form() {
   async function onSubmit(data: Order) {
     try {
       setIsLoading(true);
-      console.log(data);
 
       const addedOrder = await useAddOrderToFirebase(data);
-
-      console.log(addedOrder.newOrder);
 
       const response = await useSendEmail({
         to: addedOrder.newOrder.contactInfo.email,
