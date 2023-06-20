@@ -5,6 +5,12 @@ import { fruitSchema } from "./fruitSchema";
 const orderSchema = z.object({
   contactInfo: contactInfoSchema,
   fruitOrder: z.array(fruitSchema),
+  termsAccepted: z
+    .boolean()
+    .default(false)
+    .refine((val) => val === true, {
+      message: "Du skal acceptere betingelserne",
+    }),
 });
 
 const firebaseOrderSchema = orderSchema.extend({

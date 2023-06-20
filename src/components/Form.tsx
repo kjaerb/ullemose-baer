@@ -20,6 +20,8 @@ import axios from "axios";
 import { ConfirmationEmail } from "@/validators/sendConfirmationEmail";
 import { orderNumberGenerator } from "@/lib/orderNumber";
 
+import { TermsAndConditions } from "./TermsAndConditions";
+
 interface FormProps extends React.ComponentProps<"form"> {}
 
 export function Form({ className, ...props }: FormProps) {
@@ -108,6 +110,10 @@ export function Form({ className, ...props }: FormProps) {
 
       <div className="mx-auto">
         <AddMore className="mx-auto m-2" onClick={addOrder} />
+      </div>
+
+      <div className="flex items-center space-x-2 mx-auto mt-4">
+        <TermsAndConditions />
       </div>
 
       <Button

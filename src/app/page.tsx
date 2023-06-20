@@ -1,4 +1,5 @@
-import { Form } from "@/components/Form";
+// import { Form } from "@/components/Form";
+import { Form } from "@/components/Form/Form";
 
 const metadata = {
   title: "Ullemose bær",
@@ -17,6 +18,7 @@ export default function Home() {
       <p className="text-center mx-auto">
         Man må gerne lave flere ordre for samme type bær.
       </p>
+      {/* <Form /> */}
       <Form />
     </div>
   );

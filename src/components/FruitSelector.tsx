@@ -62,14 +62,16 @@ export function FruitSelector({
             <span className="error-message">{errors.error2.message}</span>
           )}
         </div>
-        <Trashcan
-          onClick={handleDelete}
-          className={cn(
-            "sm:mr-4 absolute sm:relative right-0 top-0 bg-white sm:bg-none border rounded-full w-10 h-10 p-2 translate-x-3 -translate-y-4 sm:border-none sm:p-0 sm:translate-x-0 sm:-translate-y-0 sm:w-6 sm:h-6",
-            canDeleteOrder && "hidden sm:visible"
-          )}
-          disabled={canDeleteOrder}
-        />
+        {canDeleteOrder ? (
+          <Trashcan
+            onClick={handleDelete}
+            className={cn(
+              "sm:mr-4 absolute sm:relative right-0 top-0 bg-white sm:bg-none border rounded-full w-10 h-10 p-2 translate-x-3 -translate-y-4 sm:border-none sm:p-0 sm:translate-x-0 sm:-translate-y-0 sm:w-6 sm:h-6",
+              canDeleteOrder && "hidden sm:visible"
+            )}
+            disabled={canDeleteOrder}
+          />
+        ) : null}
       </div>
     </div>
   );

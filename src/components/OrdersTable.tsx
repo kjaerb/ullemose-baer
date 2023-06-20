@@ -9,6 +9,7 @@ import {
   SortingState,
   ColumnFiltersState,
   getFilteredRowModel,
+  getPaginationRowModel,
   VisibilityState,
 } from "@tanstack/react-table";
 import {
@@ -18,7 +19,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
+} from "@/components/ui/table";
 import { useState } from "react";
 import {
   DropdownMenu,
@@ -50,6 +51,7 @@ export function OrdersTable<TData, TValue>({
     onColumnFiltersChange: setNameFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    getPaginationRowModel: getPaginationRowModel(),
     state: {
       sorting,
       columnFilters: nameFilters,
@@ -97,7 +99,7 @@ export function OrdersTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border shadow-md w-full">
+      <div className="rounded-md border shadow-md w-full mb-4">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -116,34 +118,56 @@ export function OrdersTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row, i) => (
-                <TableRow
-                  key={row.id + i}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
+            {table.getRowModel().rows.length
+              ? table.getRowModel().rows.map((row, i) => (
+                  <TableRow
+                    key={row.id + i}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              : null}
+            {/* 
+              Array.from(Array(4).keys()).map((i) => (
+                  <TableRow className="h-24 text-center">
+                    {table.getAllColumns().map((_, j) => {
+                      return j !== table.getAllColumns().length - 1 ? (
+                        <TableCell>
+                          <Skeleton className="h-4 w-full" />
+                        </TableCell>
+                      ) : null;
+                    })}
+                  </TableRow>
+                ))}
+                */}
           </TableBody>
         </Table>
+      </div>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
       </div>
     </>
   );

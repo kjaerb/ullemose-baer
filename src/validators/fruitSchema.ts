@@ -4,9 +4,9 @@ const fruitSchema = z.object({
   name: z.enum(["Solbær", "Ribs"]),
   kg: z
     .number()
-    .positive()
-    .min(5, "Du må minimum forudbestille 5kg")
-    .max(30, "Du kan maks forudbestille 30kg"),
+    .min(5)
+    .max(30)
+    .or(z.string().transform((val) => parseInt(val, 10))),
 });
 
 const fruitNameArray = fruitSchema.shape.name._def.values;

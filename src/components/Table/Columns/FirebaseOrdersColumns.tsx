@@ -1,4 +1,4 @@
-import { FirebaseOrder, Order } from "@/validators/orderSchema";
+import { FirebaseOrder, Order, orderSchema } from "@/validators/orderSchema";
 import { ColumnDef } from "@tanstack/react-table";
 import { Timestamp } from "firebase/firestore";
 import Link from "next/link";
@@ -6,12 +6,35 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/Dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/AlertDialog";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/Input";
+import { useFieldArray, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FruitSelector } from "@/components/FruitSelector";
 
 export const firebaseOrdersColumns: ColumnDef<FirebaseOrder>[] = [
   {
@@ -82,7 +105,25 @@ export const firebaseOrdersColumns: ColumnDef<FirebaseOrder>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
+      const info = row.original;
+
+      const {
+        register,
+        handleSubmit,
+        control,
+        formState: { errors },
+      } = useForm<Order>({
+        resolver: zodResolver(orderSchema),
+        defaultValues: {
+          contactInfo: {
+            firstName: info?.contactInfo?.firstName,
+            lastName: info?.contactInfo?.lastName,
+            email: info?.contactInfo?.email,
+            phone: info?.contactInfo?.phone,
+          },
+          fruitOrder: info?.fruitOrder,
+        },
+      });
 
       return (
         <DropdownMenu>
@@ -93,12 +134,109 @@ export const firebaseOrdersColumns: ColumnDef<FirebaseOrder>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>Handlinger</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
+            <Dialog>
+              <DialogTrigger className="flex justify-center w-full px-4 py-2 hover:border rounded-md hover:bg-gray-100 transition-all duration-200 text-sm">
+                Ændre ordre
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>
+                    Ændre {info.contactInfo.email}&apos;s ordre
+                  </DialogTitle>
+                  <DialogDescription>
+                    Hvis der er fejl på ordren, eller kunden gerne vil ændre sin
+                    bestilling, kan du gøre det her.
+                  </DialogDescription>
+                </DialogHeader>
+                <div>
+                  <form onSubmit={handleSubmit((data) => console.log(data))}>
+                    <div className="grid grid-cols-1 sm:grid-cols-2">
+                      <Input
+                        {...register("contactInfo.firstName")}
+                        error={errors.contactInfo?.firstName}
+                        label="Fornavn"
+                        autoComplete="given-name"
+                      />
+                      <Input
+                        {...register("contactInfo.lastName")}
+                        error={errors.contactInfo?.lastName}
+                        label="Efternavn"
+                        autoComplete="family-name"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2">
+                      <Input
+                        {...register("contactInfo.email")}
+                        error={errors.contactInfo?.email}
+                        label="Email"
+                        type="email"
+                        autoComplete="email"
+                      />
+                      <Input
+                        {...register("contactInfo.phone")}
+                        error={errors.contactInfo?.phone}
+                        label="Tlf nummer"
+                        autoComplete="phone"
+                        type="number"
+                        inputMode="numeric"
+                        pattern="[0-9]+"
+                      />
+                    </div>
+                    <div className="my-4">
+                      <p className="text-center">Ordre:</p>
+                      {info.fruitOrder.map((_, i) => (
+                        <FruitSelector
+                          register={register}
+                          errors={{
+                            error1: errors.fruitOrder?.[i]?.name,
+                            error2: errors.fruitOrder?.[i]?.kg,
+                          }}
+                          handleDelete={() => null}
+                          canDeleteOrder={false}
+                          number={i}
+                          key={i}
+                        />
+                      ))}
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        type="submit"
+                        className="bg-green-500 hover:bg-green-500"
+                      >
+                        Gem
+                      </Button>
+                    </DialogFooter>
+                  </form>
+                </div>
+              </DialogContent>
+            </Dialog>
+            <AlertDialog>
+              <AlertDialogTrigger
+                asChild
+                className="border-none flex text-red-500 w-full hover:text-red-600 hover:bg-red-200"
+              >
+                <Button className="mx-auto" variant="outline">
+                  Slet ordre
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Er du sikker?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Denne handling kan ikke fortrydes. Ordren vil blive slettet.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Annuller</AlertDialogCancel>
+                  <AlertDialogAction className="bg-red-500">
+                    Fortsæt
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </DropdownMenuContent>
         </DropdownMenu>
       );

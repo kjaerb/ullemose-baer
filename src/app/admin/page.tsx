@@ -3,10 +3,9 @@
 import { AccountMenu } from "@/components/AccountMenu";
 import { Login } from "@/components/Login";
 import { OrdersTable } from "@/components/OrdersTable";
-import { SignOut } from "@/components/SignOut";
 import { firebaseOrdersColumns } from "@/components/Table/Columns/FirebaseOrdersColumns";
 import { authentication, firestore } from "@/lib/firebase";
-import { FirebaseOrder, firebaseOrderSchema } from "@/validators/orderSchema";
+import { FirebaseOrder } from "@/validators/orderSchema";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
