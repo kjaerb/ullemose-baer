@@ -7,7 +7,7 @@ import {
   FormMessage,
 } from "../ui/Form";
 import { UseFormReturn } from "react-hook-form";
-import { Checkbox } from "@/components/ui/Checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,

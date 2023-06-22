@@ -20,7 +20,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
-import { Button } from "./ui/Button";
+import { Button } from "./ui/button";
 import {
   Table,
   TableBody,
@@ -28,7 +28,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/Table";
+} from "./ui/table";
 
 interface OrdersTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
