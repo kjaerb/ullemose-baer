@@ -9,10 +9,8 @@ import {
   Html,
   Img,
   Link,
-  Preview,
   Row,
   Section,
-  Tailwind,
   Text,
 } from "@react-email/components";
 import * as React from "react";
@@ -38,76 +36,93 @@ export default function UllemoseEmail({
   const replyEmail = process.env.NEXT_PUBLIC_EMAIL;
 
   return (
-    <Tailwind>
-      <Html>
-        <Head />
-        <Body style={main}>
-          <Container style={container}>
-            <Img
-              src="https://www.ullemose.dk/CustomerData/Files/Templates/1/logo.png"
-              alt="Ullemose frugt"
-              className="mx-auto"
-            />
-            <Hr style={hr} />
-            <Section style={box}>
-              <Heading style={paragraph} className="text-center">
-                Hej {order?.contactInfo.firstName}, Tak for din bestilling
-              </Heading>
-              <Text style={paragraph}>
-                Vi har modtaget din bestilling og vil kontakte dig når vi ved
-                hvornår vi høster.
-              </Text>
-              <Text style={paragraph}>
-                Bemærk, da dette er en forudbestilling, kan det ikke garanteres
-                at vi har hele din ordre når du henter den. Når vi høster giver
-                vi besked om hvor meget der høstes og hvornår det kan hentes.
-                Herfra, er det først til mølle princip. Forudbestilling er et
-                pejlemærke til os, så vi kan planlægge hvor meget vi skal høste.
-              </Text>
-            </Section>
-            <Hr style={hr} />
-            <Section style={box}>
-              <Heading style={paragraph} className="text-center">
-                Ordre nummer: {orderId}
-              </Heading>
+    <Html>
+      <Head />
+      <Body style={main}>
+        <Container style={container}>
+          <Img
+            src="https://www.ullemose.dk/CustomerData/Files/Templates/1/logo.png"
+            alt="Ullemose frugt"
+            className="mx-auto"
+          />
+          <Hr style={hr} />
+          <Section style={box}>
+            <Heading style={paragraph} className="text-center">
+              Hej {order?.contactInfo.firstName}, Tak for din bestilling
+            </Heading>
+            <Text style={paragraph}>
+              Vi har modtaget din bestilling og vil kontakte dig når vi ved
+              hvornår vi høster.
+            </Text>
+            <Text style={paragraph}>
+              Bemærk, da dette er en forudbestilling, kan det ikke garanteres at
+              vi har hele din ordre når du henter den. Når vi høster giver vi
+              besked om hvor meget der høstes og hvornår det kan hentes. Herfra,
+              er det først til mølle princip. Forudbestilling er et pejlemærke
+              til os, så vi kan planlægge hvor meget vi skal høste.
+            </Text>
+          </Section>
+          <Hr style={hr} />
+          <Section style={box}>
+            <Heading style={paragraph} className="text-center">
+              Ordre nummer: {orderId}
+            </Heading>
 
-              <Row>
-                <Column className="w-1/2">
-                  <Text className="flex justify-center font-bold">Bær</Text>
+            <Row>
+              <Column style={halfWidth}>
+                <Text style={flexCenterBold}>Bær</Text>
+              </Column>
+              <Column style={halfWidth}>
+                <Text style={flexCenterBold}>Kg</Text>
+              </Column>
+            </Row>
+            {order.fruitOrder.map((fruit, i) => (
+              <Row key={i}>
+                <Column style={halfWidth}>
+                  <Text style={flexCenter}>{fruit.name}</Text>
                 </Column>
-                <Column className="w-1/2">
-                  <Text className="flex justify-center font-bold">Kg</Text>
+                <Column style={halfWidth}>
+                  <Text style={flexCenter}>{fruit.kg} Kg</Text>
                 </Column>
               </Row>
-              {order.fruitOrder.map((fruit, i) => (
-                <Row key={i}>
-                  <Column className="w-1/2">
-                    <Text className="flex justify-center">{fruit.name}</Text>
-                  </Column>
-                  <Column className="w-1/2">
-                    <Text className="flex justify-center">{fruit.kg} Kg</Text>
-                  </Column>
-                </Row>
-              ))}
-            </Section>
-            <Hr style={hr} />
-            <Section style={box}>
-              <Text style={paragraph}>
-                Hvis du har nogle spørgsmål til din ordre, er du velkommen til
-                at skrive en mail til{" "}
-                <Link href={`mailto:${replyEmail}`} className="text-blue-500">
-                  ullemosefrugt@gmail.com
-                </Link>
-                .
-              </Text>
-              <Text style={paragraph}>Husk at oplyse dit ordre nummer.</Text>
-            </Section>
-          </Container>
-        </Body>
-      </Html>
-    </Tailwind>
+            ))}
+          </Section>
+          <Hr style={hr} />
+          <Section style={box}>
+            <Text style={paragraph}>
+              Hvis du har nogle spørgsmål til din ordre, er du velkommen til at
+              skrive en mail til{" "}
+              <Link href={`mailto:${replyEmail}`} style={bluetext}>
+                ullemosefrugt@gmail.com
+              </Link>
+              .
+            </Text>
+            <Text style={paragraph}>Husk at oplyse dit ordre nummer.</Text>
+          </Section>
+        </Container>
+      </Body>
+    </Html>
   );
 }
+
+const bluetext = {
+  color: "blue",
+};
+
+const halfWidth = {
+  width: "50%",
+};
+
+const flexCenterBold = {
+  display: "flex",
+  justifyContent: "center",
+  fontWeight: "bold",
+};
+
+const flexCenter = {
+  display: "flex",
+  justifyContent: "center",
+};
 
 const main = {
   backgroundColor: "#f6f9fc",
