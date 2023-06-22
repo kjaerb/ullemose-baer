@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { SignOut } from "./SignOut";
 
 interface AccountMenuProps {

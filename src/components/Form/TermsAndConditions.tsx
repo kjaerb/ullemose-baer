@@ -1,13 +1,5 @@
-import { Input } from "postcss";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/Form";
+import { FormControl, FormField, FormItem, FormMessage } from "../ui/Form";
 import { UseFormReturn } from "react-hook-form";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/Dialog";
 import { Order } from "@/validators/orderSchema";
+import { Checkbox } from "@/components/ui/Checkbox";
 
 interface TermsAndConditionsProps {
   form: UseFormReturn<Order>;

@@ -20,7 +20,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
-import { Button } from "./ui/button";
+import { Button } from "./ui/Button";
 import {
   Table,
   TableBody,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "./ui/Checkbox";
 import {
   Dialog,
   DialogContent,

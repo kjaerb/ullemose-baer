@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Form as FormProvider } from "@/components/ui/Form";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Order, orderSchema } from "@/validators/orderSchema";
