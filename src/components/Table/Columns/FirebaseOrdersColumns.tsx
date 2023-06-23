@@ -31,10 +31,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/Input";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FruitSelector } from "@/components/FruitSelector";
 
 export const firebaseOrdersColumns: ColumnDef<FirebaseOrder>[] = [
   {
@@ -152,55 +150,6 @@ export const firebaseOrdersColumns: ColumnDef<FirebaseOrder>[] = [
                 </DialogHeader>
                 <div>
                   <form onSubmit={handleSubmit((data) => console.log(data))}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2">
-                      <Input
-                        {...register("contactInfo.firstName")}
-                        error={errors.contactInfo?.firstName}
-                        label="Fornavn"
-                        autoComplete="given-name"
-                      />
-                      <Input
-                        {...register("contactInfo.lastName")}
-                        error={errors.contactInfo?.lastName}
-                        label="Efternavn"
-                        autoComplete="family-name"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2">
-                      <Input
-                        {...register("contactInfo.email")}
-                        error={errors.contactInfo?.email}
-                        label="Email"
-                        type="email"
-                        autoComplete="email"
-                      />
-                      <Input
-                        {...register("contactInfo.phone")}
-                        error={errors.contactInfo?.phone}
-                        label="Tlf nummer"
-                        autoComplete="phone"
-                        type="number"
-                        inputMode="numeric"
-                        pattern="[0-9]+"
-                      />
-                    </div>
-                    <div className="my-4">
-                      <p className="text-center">Ordre:</p>
-                      {info.fruitOrder.map((_, i) => (
-                        <FruitSelector
-                          register={register}
-                          errors={{
-                            error1: errors.fruitOrder?.[i]?.name,
-                            error2: errors.fruitOrder?.[i]?.kg,
-                          }}
-                          handleDelete={() => null}
-                          canDeleteOrder={false}
-                          number={i}
-                          key={i}
-                        />
-                      ))}
-                    </div>
                     <DialogFooter>
                       <Button
                         type="submit"

@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/Dialog";
 import { Order } from "@/validators/orderSchema";
 import { Checkbox } from "@/components/ui/Checkbox";
+import { TermsAndConditionsText } from "../TermsAndConditionsText";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface TermsAndConditionsProps {
   form: UseFormReturn<Order>;
@@ -37,8 +39,7 @@ export function TermsAndConditions({ form }: TermsAndConditionsProps) {
                   <DialogHeader>
                     <DialogTitle>Vilkår og betingelser</DialogTitle>
                     <DialogDescription>
-                      Hvis der er fejl på ordren, eller kunden gerne vil ændre
-                      sin bestilling, kan du gøre det her.
+                      <TermsAndConditionsText />
                     </DialogDescription>
                   </DialogHeader>
 

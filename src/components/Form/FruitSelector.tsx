@@ -71,10 +71,7 @@ export function FruitSelector<TData extends FieldValues>({
           render={({ field }) => (
             <FormItem className="px-2 w-full my-1">
               <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+                <Select onValueChange={field.onChange} defaultValue={"5"}>
                   <SelectTrigger className="">
                     <SelectValue placeholder="Kg" />
                   </SelectTrigger>
