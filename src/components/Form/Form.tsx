@@ -57,7 +57,7 @@ export function Form() {
         <NameFormFields form={form} />
         <ContactFormFields form={form} />
 
-        <div className="mx-auto">
+        <div className="mx-auto flex flex-col items-center">
           <h2 className="text-xl font-semibold">Frugtbestilling</h2>
           <p className="text-sm">
             Du kan godt lave flere bestillinger på samme bær
