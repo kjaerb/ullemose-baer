@@ -12,7 +12,6 @@ import {
 import { Order } from "@/validators/orderSchema";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { TermsAndConditionsText } from "../TermsAndConditionsText";
-import { ScrollArea } from "../ui/scroll-area";
 
 interface TermsAndConditionsProps {
   form: UseFormReturn<Order>;
