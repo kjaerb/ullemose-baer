@@ -59,6 +59,9 @@ export function Form() {
 
         <div className="mx-auto">
           <h2 className="text-xl font-semibold">Frugtbestilling</h2>
+          <p className="text-sm">
+            Du kan godt lave flere bestillinger på samme bær
+          </p>
         </div>
 
         {orders.map((order, i) => (
