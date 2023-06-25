@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Form as FormProvider } from "@/components/ui/Form";
-import { useFieldArray, useForm } from "react-hook-form";
+import { FieldArrayMethodProps, useFieldArray, useForm } from "react-hook-form";
 import { Order, orderSchema } from "@/validators/orderSchema";
 import { FruitSelector } from "./FruitSelector";
 import { TermsAndConditions } from "./TermsAndConditions";
@@ -67,16 +66,21 @@ export function Form() {
         {orders.map((order, i) => (
           <FruitSelector
             key={order.id}
+            id={i}
             form={form}
             fruitName={`fruitOrder.${i}.name`}
             kgName={`fruitOrder.${i}.kg`}
-            handleDelete={() => removeOrder(i)}
-            canDeleteOrder={orders.length === 1}
-          ></FruitSelector>
+            remove={remove}
+            canDelete={orders.length === 1}
+          />
         ))}
 
         <div className="mx-auto">
-          <AddMore className="mx-auto cursor-pointer" onClick={addOrder} />
+          <AddMore
+            className="mx-auto cursor-pointer"
+            orders={orders}
+            append={append}
+          />
         </div>
 
         <div className="mx-auto">
@@ -93,30 +97,6 @@ export function Form() {
       </form>
     </FormProvider>
   );
-
-  function findFirstMissingName(orders: Fruit[]) {
-    const existingNames = orders.map((order) => order.name);
-
-    for (let name of fruitNameArray) {
-      if (!existingNames.includes(name)) {
-        return name;
-      }
-    }
-
-    return null;
-  }
-
-  function removeOrder(index: number) {
-    if (orders.length === 1) return;
-
-    remove(index);
-  }
-
-  async function addOrder() {
-    const missingName = findFirstMissingName(orders);
-
-    append({ name: missingName ? missingName : "Solbær", kg: 5 });
-  }
 
   async function onSubmit(data: Order) {
     try {

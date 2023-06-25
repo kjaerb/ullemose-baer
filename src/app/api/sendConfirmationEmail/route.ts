@@ -17,11 +17,9 @@ export async function POST(request: Request) {
       return new Response(JSON.stringify({ data: "error" }), { status: 400 });
     }
 
-    console.log(process.env.NODE_ENV)
-
     const { to, html } = confirmationEmailBody.data;
 
-    if(process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "production") {
       const mailOptions: Mail.Options = {
         from: process.env.NEXT_PUBLIC_EMAIL,
         to,
@@ -31,7 +29,6 @@ export async function POST(request: Request) {
 
       await transporter.sendMail(mailOptions);
     }
-
 
     return new Response(JSON.stringify({ data: "success" }));
   } catch (error) {

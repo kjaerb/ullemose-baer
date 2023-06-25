@@ -62,6 +62,12 @@ const DialogContent = React.forwardRef<
 ));
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
+const DialogClose = ({ children }: { children: React.ReactNode }) => (
+  <DialogPrimitive.Close>{children}</DialogPrimitive.Close>
+);
+
+DialogClose.displayName = "DialogClose";
+
 const DialogHeader = ({
   className,
   ...props
@@ -119,6 +125,7 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
   Dialog,
+  DialogClose,
   DialogTrigger,
   DialogContent,
   DialogHeader,

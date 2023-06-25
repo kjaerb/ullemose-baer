@@ -1,4 +1,11 @@
-import { FieldValues, Path, UseFormReturn } from "react-hook-form";
+import {
+  ArrayPath,
+  FieldValues,
+  Path,
+  UseFieldArrayRemove,
+  UseFormReturn,
+  useFieldArray,
+} from "react-hook-form";
 import { FormControl, FormField, FormItem } from "../ui/Form";
 import {
   Select,
@@ -17,19 +24,21 @@ const kgRange = Array.from({ length: 7 }, (_, i) => i * 5).filter(
 );
 
 interface NewFruitSelectorProps<TData extends FieldValues> {
+  id: number;
   form: UseFormReturn<TData>;
   fruitName: Path<TData>;
   kgName: Path<TData>;
-  handleDelete: () => void;
-  canDeleteOrder: boolean;
+  remove: UseFieldArrayRemove;
+  canDelete: boolean;
 }
 
 export function FruitSelector<TData extends FieldValues>({
+  id,
   form,
   fruitName,
   kgName,
-  handleDelete,
-  canDeleteOrder,
+  remove,
+  canDelete,
 }: NewFruitSelectorProps<TData>) {
   return (
     <div
@@ -96,14 +105,20 @@ export function FruitSelector<TData extends FieldValues>({
           )}
         />
         <Trashcan
-          onClick={handleDelete}
+          onClick={() => handleDelete(id)}
           className={cn(
             "sm:mr-4 absolute sm:relative right-0 top-0 bg-white sm:bg-none border rounded-full w-10 h-10 p-2 translate-x-3 -translate-y-4 sm:border-none sm:p-0 sm:translate-x-0 sm:-translate-y-0 sm:w-6 sm:h-6",
-            canDeleteOrder && "hidden sm:visible"
+            canDelete && "hidden sm:visible"
           )}
-          disabled={canDeleteOrder}
+          disabled={canDelete}
         />
       </div>
     </div>
   );
+
+  function handleDelete(index: number) {
+    if (canDelete) return;
+
+    remove(index);
+  }
 }

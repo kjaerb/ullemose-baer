@@ -2,11 +2,11 @@
 
 import { authentication } from "@/lib/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { Button } from "./Button";
+import { Button } from "./ui/Button";
 
 export function Login() {
   return (
-    <div className='mx-auto'>
+    <div className="mx-auto">
       <Button onClick={login}>Login</Button>
     </div>
   );

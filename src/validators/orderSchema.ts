@@ -16,6 +16,7 @@ const orderSchema = z.object({
 const firebaseOrderSchema = orderSchema.extend({
   orderId: z.number(),
   createdAt: z.unknown(),
+  id: z.string().optional(),
 });
 
 type Order = z.infer<typeof orderSchema>;
