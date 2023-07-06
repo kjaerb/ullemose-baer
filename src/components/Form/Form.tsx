@@ -61,6 +61,9 @@ export function Form() {
           <p className="text-sm">
             Du kan godt lave flere bestillinger på samme bær
           </p>
+          <p className="text-sm">
+            Prisen er 20kr pr kg. Minimum bestilling er 5kg.
+          </p>
         </div>
 
         {orders.map((order, i) => (
