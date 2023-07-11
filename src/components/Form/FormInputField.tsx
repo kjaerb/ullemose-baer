@@ -6,7 +6,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/Form";
-import { Input } from "../ui/Input";
+import { Input } from "@/components/ui/Input";
 import { InputHTMLAttributes } from "react";
 import { cn, getPropertyByString } from "@/lib/utils";
 
