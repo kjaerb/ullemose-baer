@@ -15,6 +15,7 @@ export async function useAddOrderToFirebase(order: Order) {
 
   const newOrder: FirebaseOrder = {
     ...parsedOrder.data,
+    // @ts-ignore
     createdAt: serverTimestamp(),
     orderId: orderNumberGenerator(),
   };

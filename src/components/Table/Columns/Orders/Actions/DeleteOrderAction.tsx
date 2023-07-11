@@ -10,7 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from "@/components/ui/AlertDialog";
 import { firestore } from "@/lib/firebase";
 import { FirebaseOrder } from "@/validators/orderSchema";
 import { deleteDoc, doc } from "firebase/firestore";

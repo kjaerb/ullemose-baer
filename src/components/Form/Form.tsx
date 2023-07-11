@@ -3,20 +3,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Form as FormProvider } from "@/components/ui/Form";
-import { FieldArrayMethodProps, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Order, orderSchema } from "@/validators/orderSchema";
 import { FruitSelector } from "./FruitSelector";
 import { TermsAndConditions } from "./TermsAndConditions";
 import { NameFormFields } from "./NameFormFields";
 import { ContactFormFields } from "./ContactFormFields";
-import { AddMore } from "../AddMore";
-import { Fruit, fruitNameArray } from "@/validators/fruitSchema";
+import { AddMore } from "@/components/AddMore";
 import { useAddOrderToFirebase } from "@/hooks/useOrders";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { render } from "@react-email/render";
 import UllemoseEmail from "@/react-email/emails/ullemose-confirm";
-import { Loading } from "../Loading";
+import { Loading } from "@/components/Loading";
 import { useSendEmail } from "@/hooks/useSendEmail";
 
 export function Form() {

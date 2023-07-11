@@ -1,9 +1,8 @@
 "use client";
 
+import { Dashboard } from "@/components/Dashboard/Dashboard";
 import { Login } from "@/components/Login";
-import { Orders } from "@/components/Table/Orders";
 import { authentication } from "@/lib/firebase";
-
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function AdminPage() {
@@ -11,7 +10,7 @@ export default function AdminPage() {
 
   return (
     <div className="flex justify-center flex-col">
-      {user ? <Orders /> : <Login />}
+      {user ? <Dashboard /> : <Login />}
     </div>
   );
 }
