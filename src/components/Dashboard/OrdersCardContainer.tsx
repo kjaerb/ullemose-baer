@@ -25,21 +25,6 @@ export function OrdersCardContainer({ orders }: OrdersCardContainerProps) {
           {orders.map((order) => {
             return <OrdersCard order={order} key={order.orderId} />;
           })}
-          {orders.map((order) => {
-            return <OrdersCard order={order} key={order.orderId} />;
-          })}
-          {orders.map((order) => {
-            return <OrdersCard order={order} key={order.orderId} />;
-          })}
-          {orders.map((order) => {
-            return <OrdersCard order={order} key={order.orderId} />;
-          })}
-          {orders.map((order) => {
-            return <OrdersCard order={order} key={order.orderId} />;
-          })}
-          {orders.map((order) => {
-            return <OrdersCard order={order} key={order.orderId} />;
-          })}
         </CardContent>
       </Card>
     </ScrollArea>
