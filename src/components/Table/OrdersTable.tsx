@@ -28,7 +28,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/Table";
+} from "@/components/ui/table";
 
 interface OrdersTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
