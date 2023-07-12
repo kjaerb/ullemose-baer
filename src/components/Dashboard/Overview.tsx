@@ -41,7 +41,23 @@ export function Overview({ orders }: OverviewProps) {
           {totalKilos * 20} kr
         </StatCard>
         <StatCard title="Kilo" description="Hvor mange kg bær der er bestilt">
-          {totalKilos} kg
+          <span className="flex flex-col">
+            {totalKilos} kg
+            <span className="text-sm text-gray-600 flex flex-col">
+              <span>
+                {totalOrders
+                  .filter((order) => order.name === "Ribs")
+                  .reduce((a, b) => a + b.kg, 0)}{" "}
+                kg Ribs
+              </span>
+              <span>
+                {totalOrders
+                  .filter((order) => order.name === "Solbær")
+                  .reduce((a, b) => a + b.kg, 0)}{" "}
+                kg Solbær
+              </span>
+            </span>
+          </span>
         </StatCard>
         <StatCard
           title="Bestillinger i dag"
