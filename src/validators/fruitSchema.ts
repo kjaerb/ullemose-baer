@@ -9,7 +9,9 @@ const fruitSchema = z.object({
     .or(z.string().transform((val) => parseInt(val, 10))),
 });
 
-const fruitNameArray = fruitSchema.shape.name._def.values;
+const fruitNameArray = fruitSchema.shape.name._def.values.filter(
+  (val) => val === "Ribs"
+);
 
 const fruitOrderSchema = z.array(fruitSchema).min(1);
 
