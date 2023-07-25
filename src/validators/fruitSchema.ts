@@ -13,6 +13,8 @@ const fruitNameArray = fruitSchema.shape.name._def.values.filter(
   (val) => val === "Ribs"
 );
 
+type FruitName = z.infer<typeof fruitSchema.shape.name>;
+
 const fruitOrderSchema = z.array(fruitSchema).min(1);
 
 type FruitOrder = z.infer<typeof fruitOrderSchema>;
@@ -21,4 +23,4 @@ type Fruit = z.infer<typeof fruitSchema>;
 
 export { fruitSchema, fruitOrderSchema, fruitNameArray };
 
-export type { FruitOrder, Fruit };
+export type { FruitOrder, Fruit, FruitName };

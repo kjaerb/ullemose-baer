@@ -7,6 +7,7 @@ import { FirebaseOrder } from "@/validators/orderSchema";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { firestore } from "@/lib/firebase";
 import { Overview } from "./Overview";
+import { SendEmailDialog } from "./SendEmailDialog";
 
 interface DashboardProps {}
 
@@ -32,17 +33,21 @@ export function Dashboard({}: DashboardProps) {
   }, []);
 
   return (
-    <Tabs defaultValue="overview" className="px-4 sm:px-10">
-      <TabsList className="mb-4 w-full grid grid-cols-2 sm:w-fit">
-        <TabsTrigger value="overview">Overview</TabsTrigger>
-        <TabsTrigger value="table">Table</TabsTrigger>
-      </TabsList>
-      <TabsContent value="overview">
-        <Overview orders={orders} />
-      </TabsContent>
-      <TabsContent value="table">
-        <Table orders={orders} />
-      </TabsContent>
-    </Tabs>
+    <>
+      <Tabs defaultValue="overview" className="px-4 sm:px-10">
+        <TabsList className="mb-4 w-full grid grid-cols-2 sm:w-fit">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="table">Table</TabsTrigger>
+        </TabsList>
+        <SendEmailDialog orders={orders} />
+
+        <TabsContent value="overview">
+          <Overview orders={orders} />
+        </TabsContent>
+        <TabsContent value="table">
+          <Table orders={orders} />
+        </TabsContent>
+      </Tabs>
+    </>
   );
 }

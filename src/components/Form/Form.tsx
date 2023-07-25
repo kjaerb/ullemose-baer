@@ -113,6 +113,7 @@ export function Form() {
       const addedOrder = await useAddOrderToFirebase(data);
 
       const response = await useSendEmail({
+        api: "/api/sendConfirmationEmail",
         to: addedOrder.newOrder.contactInfo.email,
         html: render(
           <UllemoseEmail
