@@ -24,7 +24,8 @@ export function OrdersBarChart({ orders }: OrdersBarChartProps) {
     });
 
     orders.forEach((order) => {
-      const createdAtDate = new Date(order.createdAt.toMillis());
+      // @ts-ignore
+      const createdAtDate = new Date(order.createdAt.toMillis() || "");
       const orderDate = createdAtDate.toISOString().split("T")[0];
 
       const dayObject = last7Days.find((day) => day.date === orderDate);

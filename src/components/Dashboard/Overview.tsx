@@ -14,6 +14,7 @@ export function Overview({ orders }: OverviewProps) {
   const totalKilos = totalOrders.reduce((a, b) => a + b.kg, 0);
   const ordersToday = orders.filter((order) => {
     if (!order.createdAt) return false;
+    // @ts-ignore
     const date = new Date(order.createdAt.seconds * 1000);
     const today = new Date();
 
@@ -21,6 +22,7 @@ export function Overview({ orders }: OverviewProps) {
   });
   const ordersYesterday = orders.filter((order) => {
     if (!order.createdAt) return false;
+    // @ts-ignore
     const date = new Date(order.createdAt.seconds * 1000);
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
