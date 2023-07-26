@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/Toaster";
 import "./globals.css";
 
 export default function RootLayout({
@@ -6,9 +7,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='dk'>
+    <html lang="dk">
       <body>
         {children}
+        <Toaster />
       </body>
     </html>
   );

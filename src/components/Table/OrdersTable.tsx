@@ -29,7 +29,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SendEmailDialog } from "../Dashboard/SendEmailDialog";
 
 interface OrdersTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -137,19 +136,6 @@ export function OrdersTable<TData, TValue>({
                   </TableRow>
                 ))
               : null}
-            {/* 
-              Array.from(Array(4).keys()).map((i) => (
-                  <TableRow className="h-24 text-center">
-                    {table.getAllColumns().map((_, j) => {
-                      return j !== table.getAllColumns().length - 1 ? (
-                        <TableCell>
-                          <Skeleton className="h-4 w-full" />
-                        </TableCell>
-                      ) : null;
-                    })}
-                  </TableRow>
-                ))}
-                */}
           </TableBody>
         </Table>
       </div>

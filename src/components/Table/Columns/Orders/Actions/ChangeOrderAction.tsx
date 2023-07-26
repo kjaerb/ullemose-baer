@@ -57,7 +57,7 @@ export function ChangeOrderAction({ order }: ChangeOrderActionProps) {
       await updateDoc(docRef, data);
       closeButtonRef.current?.click();
     } catch (ex) {
-      console.log(ex);
+      console.error(ex);
     } finally {
       setIsLoading(false);
     }

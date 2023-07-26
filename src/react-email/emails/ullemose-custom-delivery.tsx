@@ -15,13 +15,12 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-interface UllemoseEmailProps {
+interface UllemoseCustomDeliveryProps {
   order: FirebaseOrder;
-  solbaerDeliveryDay: string;
-  ribsDeliveryDay: string;
+  text: string;
 }
 
-export default function UllemoseDelivery({
+export default function UllemoseCustomDelivery({
   order = {
     contactInfo: {
       firstName: "Placeholder",
@@ -40,20 +39,9 @@ export default function UllemoseDelivery({
     emailsReceived: 0,
     emailsReference: [],
   },
-  solbaerDeliveryDay = "",
-  ribsDeliveryDay = "",
-}: UllemoseEmailProps) {
+  text = "",
+}: UllemoseCustomDeliveryProps) {
   const replyEmail = process.env.NEXT_PUBLIC_EMAIL;
-
-  function getDeliveryDate(): string {
-    const hasRibs = order.fruitOrder.filter((fruit) => fruit.name === "Ribs");
-
-    if (hasRibs.length > 0) {
-      return ribsDeliveryDay;
-    } else {
-      return solbaerDeliveryDay;
-    }
-  }
 
   return (
     <Html>
@@ -70,22 +58,7 @@ export default function UllemoseDelivery({
             <Heading style={paragraph} className="text-center">
               Hej {order?.contactInfo.firstName}
             </Heading>
-            <Text style={paragraph}>
-              Vi gør klar til høst og du kan snart hente din ordre
-            </Text>
-            <Text style={paragraph}>
-              Der er to afhentningsdage, alt efter hvilke bær du har bestilt.
-              Solbær kan hentes d. 27. Juli og ribs kan hentes d. 28. Juli.
-              Afhentningen er i vores gårdbutik på Hovvej 7, 5883 Oure.
-            </Text>
-            <Text style={paragraph}>
-              Afhentnings dato:{" "}
-              {new Date(getDeliveryDate()).toLocaleDateString("da-DK", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              })}
-            </Text>
+            <Text style={paragraphPreWrap}>{text}</Text>
           </Section>
           <Hr style={hr} />
           <Section style={box}>
@@ -185,6 +158,14 @@ const paragraph = {
   fontSize: "16px",
   lineHeight: "24px",
   textAlign: "center" as const,
+};
+
+const paragraphPreWrap = {
+  color: "#525f7f",
+  fontSize: "16px",
+  lineHeight: "24px",
+  textAlign: "center" as const,
+  whiteSpace: "pre-wrap" as const,
 };
 
 const anchor = {
