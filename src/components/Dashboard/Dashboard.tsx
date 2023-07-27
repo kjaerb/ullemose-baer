@@ -24,7 +24,15 @@ export function Dashboard({}: DashboardProps) {
     setOrders(() => {
       if (!ordersCollection) return [];
 
-      return ordersCollection.docs.map((doc) => doc.data() as FirebaseOrder);
+      return ordersCollection.docs.map((doc) => {
+        const data = doc.data();
+        const id = doc.id;
+
+        return {
+          ...data,
+          id,
+        } as FirebaseOrder;
+      });
     });
   }, [ordersCollection, ordersLoading, ordersError]);
 

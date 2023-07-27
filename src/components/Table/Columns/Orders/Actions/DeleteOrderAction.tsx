@@ -15,6 +15,7 @@ import { firestore } from "@/lib/firebase";
 import { FirebaseOrder } from "@/validators/orderSchema";
 import { deleteDoc, doc } from "firebase/firestore";
 import { useState } from "react";
+import { useToast } from "@/hooks/useToast";
 
 interface DeleteOrderActionProps {
   order: FirebaseOrder;
@@ -22,13 +23,20 @@ interface DeleteOrderActionProps {
 
 export function DeleteOrderAction({ order }: DeleteOrderActionProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { toast } = useToast();
 
   async function handleDeleteOrder() {
     try {
       setIsLoading(true);
-      const docRef = doc(firestore, "orders", order.id ?? "");
+      if (!order.id) throw new Error("Order id is undefined");
+      const docRef = doc(firestore, `orders/${order.id}`);
       deleteDoc(docRef);
     } catch (ex) {
+      toast({
+        variant: "default",
+        title: "Der skete en fejl",
+        description: "Ordren blev ikke slettet",
+      });
       console.error(ex);
     } finally {
       setIsLoading(false);
