@@ -39,7 +39,6 @@ import {
   doc,
   increment,
   serverTimestamp,
-  setDoc,
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
@@ -49,6 +48,7 @@ import { getEmailTemplate } from "@/lib/email";
 import { render } from "@react-email/components";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/ScrollArea";
+import { Loading } from "@/components/Loading";
 
 interface EmailTableProps<TValue> {
   columns: ColumnDef<FirebaseOrder, TValue>[];
@@ -65,6 +65,9 @@ export function EmailTable<TValue>({ columns, data }: EmailTableProps<TValue>) {
   const [rowSelection, setRowSelection] = useState<{
     [key: number]: boolean;
   }>({});
+  const [isSendingEmailLoading, setIsSendingEmailLoading] =
+    useState<boolean>(false);
+
   const [sendEmailDisabled, setSendEmailDisabled] = useState<boolean>(true);
   const closeEmailBtn = useRef<HTMLButtonElement>(null);
 
@@ -92,7 +95,6 @@ export function EmailTable<TValue>({ columns, data }: EmailTableProps<TValue>) {
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setNameFilters,
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onRowSelectionChange: setRowSelection,
 
     state: {
@@ -102,7 +104,8 @@ export function EmailTable<TValue>({ columns, data }: EmailTableProps<TValue>) {
     },
   });
 
-  async function sendEmail(order: FirebaseOrder) {
+  async function sendEmail(order: FirebaseOrder, showToast: boolean = true) {
+    setIsSendingEmailLoading(true);
     const email = getEmailTemplate({
       order,
       delivery: emailVariant,
@@ -115,6 +118,12 @@ export function EmailTable<TValue>({ columns, data }: EmailTableProps<TValue>) {
     const emailsRef = collection(firestore, "emails");
 
     try {
+      await useSendEmail({
+        api: "/api/sendDeliveryEmail",
+        to: order.contactInfo.email,
+        html: render(email),
+      });
+
       const emailDoc = await addDoc(emailsRef, {
         text: render(email),
         orderId: order.id || "",
@@ -124,32 +133,34 @@ export function EmailTable<TValue>({ columns, data }: EmailTableProps<TValue>) {
         emailsReceived: increment(1),
         emailsReference: arrayUnion(emailDoc.id),
       });
-      await useSendEmail({
-        api: "/api/sendDeliveryEmail",
-        to: order.contactInfo.email,
-        html: render(email),
-      });
 
-      toast({
-        title: "Email sent",
-        description: "Email sent to " + order.contactInfo.email,
-        variant: "success",
-      });
+      if (showToast) {
+        toast({
+          title: "Email sent",
+          description: "Email sent to " + order.contactInfo.email,
+          variant: "success",
+        });
+      }
     } catch (e) {
       console.error(e);
-      await updateDoc(orderRef, { ...order, emailsReceived: increment(-1) });
 
-      toast({
-        title: "Fejl ved afsendelse af email",
-        description: "Email blev ikke sendt til " + order.contactInfo.email,
-        variant: "destructive",
-      });
+      if (showToast) {
+        toast({
+          title: "Fejl ved afsendelse af email",
+          description: "Email blev ikke sendt til " + order.contactInfo.email,
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setIsSendingEmailLoading(false);
     }
   }
 
-  async function sendEmails(orders: FirebaseOrder[]) {
+  async function sendBulkEmails(orders: FirebaseOrder[]) {
+    const sendEmailPromises = orders.map((order) => sendEmail(order, false));
+    setIsSendingEmailLoading(true);
     try {
-      await Promise.all(orders.map((order) => sendEmail(order)));
+      await Promise.all(sendEmailPromises);
 
       toast({
         title: "Emails sent",
@@ -157,13 +168,15 @@ export function EmailTable<TValue>({ columns, data }: EmailTableProps<TValue>) {
         variant: "success",
       });
       closeEmailBtn.current?.click();
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error("Error sending bulk emails:", error);
       toast({
         title: "Fejl ved afsendelse af emails",
         description: "Emails blev ikke sendt",
         variant: "destructive",
       });
+    } finally {
+      setIsSendingEmailLoading(false);
     }
   }
 
@@ -208,16 +221,16 @@ export function EmailTable<TValue>({ columns, data }: EmailTableProps<TValue>) {
                 </Button>
               </DialogClose>
               <Button
-                disabled={sendEmailDisabled}
+                disabled={sendEmailDisabled || isSendingEmailLoading}
                 onClick={() =>
-                  sendEmails(
+                  sendBulkEmails(
                     Object.keys(rowSelection).map(
                       (key) => data[key as unknown as number]
                     )
                   )
                 }
               >
-                Send emails
+                {isSendingEmailLoading ? <Loading /> : "Send emails"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -258,14 +271,14 @@ export function EmailTable<TValue>({ columns, data }: EmailTableProps<TValue>) {
                     ))}
                     <TableCell>
                       <Button
-                        disabled={sendEmailDisabled}
+                        disabled={sendEmailDisabled || isSendingEmailLoading}
                         variant={"link"}
                         onClick={() => sendEmail(row.original)}
                         className={cn(
                           sendEmailDisabled ? "cursor-not-allowed" : ""
                         )}
                       >
-                        Send email
+                        {isSendingEmailLoading ? <Loading /> : "Send email"}
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -273,24 +286,6 @@ export function EmailTable<TValue>({ columns, data }: EmailTableProps<TValue>) {
               : null}
           </TableBody>
         </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
       </div>
     </>
   );

@@ -4,12 +4,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { Table } from "./Table";
 import { useEffect, useState } from "react";
 import { FirebaseOrder } from "@/validators/orderSchema";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  orderBy,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
 import { firestore } from "@/lib/firebase";
 import { Overview } from "./Overview";
 import { SendEmail } from "./SendEmail";
 import { Separator } from "../ui/Separator";
 import { useCollection } from "react-firebase-hooks/firestore";
+import { Button } from "../ui/Button";
+import { useAddOrderToFirebase } from "@/hooks/useOrders";
 
 interface DashboardProps {}
 
