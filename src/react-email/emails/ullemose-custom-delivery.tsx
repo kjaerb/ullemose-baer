@@ -13,6 +13,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
+import { serverTimestamp } from "firebase/firestore";
 import * as React from "react";
 
 interface UllemoseCustomDeliveryProps {
@@ -33,7 +34,7 @@ export default function UllemoseCustomDelivery({
       { name: "Ribs", kg: 5 },
     ],
     termsAccepted: false,
-    createdAt: new Date(),
+    createdAt: serverTimestamp(),
     orderId: 0,
     id: "",
     emailsReceived: 0,

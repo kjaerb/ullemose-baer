@@ -1,4 +1,5 @@
 import { FirebaseOrder } from "@/validators/orderSchema";
+import { serverTimestamp } from "firebase/firestore";
 import { create } from "zustand";
 
 type EmailVariant = "delivery" | "custom-delivery";
@@ -33,7 +34,7 @@ const emailStore = create<EmailStore>((set) => ({
       { name: "Ribs", kg: 5 },
     ],
     termsAccepted: false,
-    createdAt: new Date(),
+    createdAt: serverTimestamp(),
     orderId: 0,
     id: "",
     emailsReceived: 0,

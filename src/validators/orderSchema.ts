@@ -16,7 +16,7 @@ const orderSchema = z.object({
 
 const firebaseOrderSchema = orderSchema.extend({
   orderId: z.number(),
-  createdAt: z.custom<ReturnType<typeof serverTimestamp> & Timestamp>(),
+  createdAt: z.custom<ReturnType<typeof serverTimestamp> | Timestamp>(),
   id: z.string().optional(),
   emailsReceived: z.number().default(0).optional(),
   emailsReference: z.array(z.string()).default([]).optional(),

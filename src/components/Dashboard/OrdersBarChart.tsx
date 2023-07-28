@@ -24,6 +24,7 @@ export function OrdersBarChart({ orders }: OrdersBarChartProps) {
     });
 
     orders.forEach((order) => {
+      // @ts-ignore
       const createdAtDate = order.createdAt.toDate();
       const orderDate = createdAtDate.toISOString().split("T")[0];
 
