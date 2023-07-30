@@ -17,6 +17,22 @@ export async function POST(request: Request) {
 
     const { to, html } = sendDeliveryEmailBody.data;
 
+    await new Promise((resolve, reject) => {
+      transporter.verify((error, success) => {
+        if (error) {
+          reject(error);
+          return new Response(
+            JSON.stringify({
+              message: "internal server error, transporter not ready",
+              data: JSON.stringify(error),
+            })
+          );
+        } else {
+          resolve(success);
+        }
+      });
+    });
+
     const mailOptions: Mail.Options = {
       from: process.env.NEXT_PUBLIC_EMAIL,
       to,
@@ -24,14 +40,23 @@ export async function POST(request: Request) {
       html,
     };
 
-    await transporter.sendMail(mailOptions);
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error(error);
+          reject(error);
+        } else {
+          resolve(info);
+        }
+      });
+    });
 
     return new Response(JSON.stringify({ data: to }));
   } catch (error) {
     console.error(error);
     return new Response(
       JSON.stringify({
-        message: "internal server error",
+        message: "internal server error: " + error,
         data: JSON.stringify(error),
       }),
       {
