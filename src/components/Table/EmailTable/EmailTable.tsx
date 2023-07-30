@@ -157,10 +157,9 @@ export function EmailTable<TValue>({ columns, data }: EmailTableProps<TValue>) {
   }
 
   async function sendBulkEmails(orders: FirebaseOrder[]) {
-    const sendEmailPromises = orders.map((order) => sendEmail(order, false));
     setIsSendingEmailLoading(true);
     try {
-      await Promise.all(sendEmailPromises);
+      orders.forEach(async (order) => await sendEmail(order, false));
 
       toast({
         title: "Emails sent",
