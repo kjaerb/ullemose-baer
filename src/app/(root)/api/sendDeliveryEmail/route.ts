@@ -1,6 +1,5 @@
 import transporter from "@/lib/nodemailer";
 import { sendDeliveryEmail } from "@/validators/sendDeliveryEmail";
-import { NextRequest, NextResponse } from "next/server";
 import Mail from "nodemailer/lib/mailer";
 
 export async function POST(request: Request) {
@@ -50,8 +49,6 @@ export async function POST(request: Request) {
         }
       });
     });
-
-    transporter.close();
 
     return new Response(JSON.stringify({ data: to }));
   } catch (error) {
