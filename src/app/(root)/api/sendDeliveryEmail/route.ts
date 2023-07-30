@@ -51,6 +51,8 @@ export async function POST(request: Request) {
       });
     });
 
+    transporter.close();
+
     return new Response(JSON.stringify({ data: to }));
   } catch (error) {
     console.error(error);
