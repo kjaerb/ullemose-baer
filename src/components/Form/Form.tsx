@@ -80,6 +80,7 @@ export function Form() {
             kgName={`fruitOrder.${i}.kg`}
             remove={remove}
             canDelete={orders.length === 1}
+            excludeFruit={["Solbær"]}
           />
         ))}
 

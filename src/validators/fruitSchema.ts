@@ -9,9 +9,7 @@ const fruitSchema = z.object({
     .or(z.string().transform((val) => parseInt(val, 10))),
 });
 
-const fruitNameArray = fruitSchema.shape.name._def.values.filter(
-  (val) => val === "Ribs"
-);
+const fruitNameArray = fruitSchema.shape.name._def.values;
 
 type FruitName = z.infer<typeof fruitSchema.shape.name>;
 

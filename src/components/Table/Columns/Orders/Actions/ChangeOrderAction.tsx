@@ -91,6 +91,7 @@ export function ChangeOrderAction({ order }: ChangeOrderActionProps) {
                     kgName={`fruitOrder.${i}.kg`}
                     remove={remove}
                     canDelete={orders.length === 1}
+                    excludeFruit={[]}
                   />
                 ))}
                 <div className="mx-auto">
