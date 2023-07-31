@@ -64,7 +64,7 @@ export function Overview({ orders }: OverviewProps) {
 
   return (
     <div className="">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <KPICard
           title="Bestillinger"
           description="Det totale antal af ordre"

@@ -154,7 +154,10 @@ export function SendEmail({ orders }: SendEmailProps) {
       <div>
         <p className="text-center mb-2">Forhåndsvis email</p>
         <div
-          className={cn("border p-2 rounded-md", emailFixed && "fixed top-0")}
+          className={cn(
+            "border p-2 rounded-md",
+            emailFixed && "relative md:fixed md:top-0"
+          )}
           dangerouslySetInnerHTML={{
             __html: render(emailTemplate),
           }}
