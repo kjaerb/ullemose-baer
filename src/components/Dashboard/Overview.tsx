@@ -5,19 +5,22 @@ import { KPICard } from "./KPICard";
 import { Table } from "./Table";
 import { useMemo } from "react";
 import { Separator } from "../ui/Separator";
-import { getLast7Days, getYYMMDD } from "@/lib/date";
+import { getLastNDays, getYYMMDD } from "@/lib/date";
 import React from "react";
+import useOrderStore from "@/store/orderStore";
 
 interface OverviewProps {
   orders: FirebaseOrder[];
 }
 
 export function Overview({ orders }: OverviewProps) {
+  const { period } = useOrderStore();
+
   const totalOrders = orders.flatMap((order) => order.fruitOrder);
   const totalKilos = totalOrders.reduce((a, b) => a + b.kg, 0);
 
   const ordersThisWeek = useMemo(() => {
-    const last7Days = getLast7Days();
+    const lastNDays = getLastNDays(period);
 
     const ordersStart: {
       name: string;
@@ -25,7 +28,7 @@ export function Overview({ orders }: OverviewProps) {
       Indtægt: number;
       "Kilo Ribs": number;
       "Kilo Solbær": number;
-    }[] = last7Days.map((day) => {
+    }[] = lastNDays.map((day) => {
       const ordersOnDay = orders.filter(
         // @ts-ignore
         (order) => getYYMMDD(order.createdAt.toDate()) === getYYMMDD(day)

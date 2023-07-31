@@ -1,13 +1,24 @@
 "use client";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { Overview } from "./Overview";
 import { SendEmail } from "./SendEmail";
-import { Separator } from "../ui/Separator";
+import { Separator } from "@/components/ui/Separator";
 import { useGetOrders } from "@/hooks/useOrders";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select";
+import useOrderStore, { periodOptions, yearOptions } from "@/store/orderStore";
 
 interface DashboardProps {}
 
 export function Dashboard({}: DashboardProps) {
+  const { period, setPeriod, year, setYear } = useOrderStore();
+
   const orders = useGetOrders();
 
   return (
@@ -16,6 +27,38 @@ export function Dashboard({}: DashboardProps) {
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="emails">Emails</TabsTrigger>
       </TabsList>
+      <div className="grid grid-cols-2 gap-4 mb-4 w-fit">
+        <Select
+          value={year.toString()}
+          onValueChange={(e) => setYear(parseInt(e))}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="År" defaultValue={year} />
+          </SelectTrigger>
+          <SelectContent>
+            {yearOptions.map((option) => (
+              <SelectItem value={option.value.toString()}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select
+          value={period.toString()}
+          onValueChange={(e) => setPeriod(parseInt(e))}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Periode" defaultValue={period} />
+          </SelectTrigger>
+          <SelectContent>
+            {periodOptions.map((option) => (
+              <SelectItem value={option.value.toString()}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
       <Separator />
       <TabsContent value="overview">
         <Overview orders={orders} />

@@ -12,6 +12,14 @@ export function getLast7Days() {
   return dates.reverse();
 }
 
+export function getLastNDays(n: number) {
+  const dates = [];
+  for (let i = 0; i < n; i++) {
+    dates.push(getPreviousNDates(i));
+  }
+  return dates.reverse();
+}
+
 export function getYYMMDD(date: Date) {
   return date.toISOString().slice(0, 10);
 }
