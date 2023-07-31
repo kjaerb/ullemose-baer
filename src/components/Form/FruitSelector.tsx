@@ -23,7 +23,7 @@ const kgRange = Array.from({ length: 7 }, (_, i) => i * 5).filter(
   (i) => i !== 0
 );
 
-interface NewFruitSelectorProps<TData extends FieldValues> {
+interface FruitSelectorProps<TData extends FieldValues> {
   id: number;
   form: UseFormReturn<TData>;
   fruitName: Path<TData>;
@@ -41,7 +41,7 @@ export function FruitSelector<TData extends FieldValues>({
   remove,
   canDelete,
   excludeFruit,
-}: NewFruitSelectorProps<TData>) {
+}: FruitSelectorProps<TData>) {
   return (
     <div
       className={cn(

@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getAuth, initializeAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -21,3 +21,7 @@ export const firestore = getFirestore(app);
 export const analytics = isSupported().then((yes) =>
   yes ? getAnalytics(app) : null
 );
+
+export async function getUser() {
+  return authentication.currentUser;
+}

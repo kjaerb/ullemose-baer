@@ -12,7 +12,10 @@ export function Login() {
   );
 
   async function login() {
-    const googleProvider = new GoogleAuthProvider();
-    signInWithPopup(authentication, googleProvider);
+    try {
+      signInWithPopup(authentication, new GoogleAuthProvider());
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

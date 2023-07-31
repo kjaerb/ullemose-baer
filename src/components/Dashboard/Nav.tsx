@@ -13,6 +13,7 @@ import {
 import { authentication } from "@/lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { SignOut } from "@/components/SignOut";
+import { Button } from "../ui/Button";
 
 interface NavProps {}
 
@@ -26,9 +27,9 @@ export function Nav({}: NavProps) {
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button>
+          <Button variant={"link"}>
             <Profile />
-          </button>
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
