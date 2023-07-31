@@ -29,6 +29,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "../ui/Skeleton";
+import useLoadingStore from "@/store/loadingStore";
 
 interface OrdersTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -42,6 +44,7 @@ export function OrdersTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [nameFilters, setNameFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const { ordersLoading } = useLoadingStore();
 
   const table = useReactTable({
     data,
@@ -135,7 +138,17 @@ export function OrdersTable<TData, TValue>({
                     ))}
                   </TableRow>
                 ))
-              : null}
+              : ordersLoading &&
+                [...Array(10)].map((_, i) => (
+                  <TableRow key={i}>
+                    {[...Array(columns.length)].map((_, j) => (
+                      <TableCell key={j + i}>
+                        <Skeleton className="h-5" />
+                      </TableCell>
+                    ))}
+                    <div className="my-6" key={i}></div>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
       </div>

@@ -1,5 +1,9 @@
 import { Nav } from "@/components/Dashboard/Nav";
 
+export const metadata = {
+  title: "Ullemose bær Admin",
+};
+
 interface AdminDashboardLayoutProps {
   children: React.ReactNode;
 }

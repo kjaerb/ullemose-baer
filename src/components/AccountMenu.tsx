@@ -20,8 +20,10 @@ export function AccountMenu({ name }: AccountMenuProps) {
     <DropdownMenu dir="ltr">
       <DropdownMenuTrigger className="border shadow-md rounded-md">
         <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
-          <Menu className="h-4 w-4" />
+          <>
+            <span className="sr-only">Open menu</span>
+            <Menu className="h-4 w-4" />
+          </>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

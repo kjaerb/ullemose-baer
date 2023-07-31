@@ -30,6 +30,7 @@ interface NewFruitSelectorProps<TData extends FieldValues> {
   kgName: Path<TData>;
   remove: UseFieldArrayRemove;
   canDelete: boolean;
+  excludeFruit: string[];
 }
 
 export function FruitSelector<TData extends FieldValues>({
@@ -39,6 +40,7 @@ export function FruitSelector<TData extends FieldValues>({
   kgName,
   remove,
   canDelete,
+  excludeFruit,
 }: NewFruitSelectorProps<TData>) {
   return (
     <div
@@ -61,11 +63,13 @@ export function FruitSelector<TData extends FieldValues>({
                     <SelectLabel className="px-2 py-1 mx-6 my-1">
                       Bær
                     </SelectLabel>
-                    {fruitNameArray.map((fruit, i) => (
-                      <SelectItem key={`${fruit}.${i}`} value={fruit}>
-                        {fruit}
-                      </SelectItem>
-                    ))}
+                    {fruitNameArray
+                      .filter((fruit) => !excludeFruit.includes(fruit))
+                      .map((fruit, i) => (
+                        <SelectItem key={`${fruit}.${i}`} value={fruit}>
+                          {fruit}
+                        </SelectItem>
+                      ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
