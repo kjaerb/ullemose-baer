@@ -8,7 +8,7 @@ interface AdminDashboardLayoutProps {
   children: React.ReactNode;
 }
 
-export default function AdminDashboard({
+export default async function AdminDashboard({
   children,
 }: AdminDashboardLayoutProps) {
   return (

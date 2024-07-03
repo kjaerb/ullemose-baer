@@ -7,7 +7,7 @@ export const periodOptions = [
 ];
 
 export const yearOptions = [
-  { value: new Date().getFullYear(), label: new Date().getFullYear() },
+  { value: 2023, label: 2023 },
   { value: 2024, label: 2024 },
 ];
 

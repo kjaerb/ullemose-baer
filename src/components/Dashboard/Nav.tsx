@@ -14,6 +14,7 @@ import { authentication } from "@/lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { SignOut } from "@/components/SignOut";
 import { Button } from "../ui/Button";
+import Link from "next/link";
 
 interface NavProps {}
 
@@ -23,7 +24,9 @@ export function Nav({}: NavProps) {
   return (
     <nav className="w-screen border-b shadow-md py-2 px-4 sm:px-10 mb-6 flex justify-between items-center">
       <div>
-        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <Link href="/" className="text-2xl font-bold">
+          Dashboard
+        </Link>
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
