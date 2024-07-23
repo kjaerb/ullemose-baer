@@ -57,7 +57,7 @@ export function Form() {
 
         <div className="mx-auto flex flex-col items-center">
           <h2 className="text-xl font-semibold">Frugtbestilling</h2>
-          {/* <p className="font-bold text-center py-2">
+          <p className="font-bold text-center py-2">
             I år tegner desværre ikke til at være det bedste solbær år, derfor
             har vi lukket for bestilling af solbær. Det er stadig muligt at
             bestille ribs. Hvis vi ender med at have flere solbær end forventet,
@@ -68,7 +68,7 @@ export function Form() {
           </p>
           <p className="text-sm">
             Prisen er 20kr pr kg. Minimum bestilling er 5kg.
-          </p> */}
+          </p>
         </div>
 
         {orders.map((order, i) => (
@@ -80,7 +80,7 @@ export function Form() {
             kgName={`fruitOrder.${i}.kg`}
             remove={remove}
             canDelete={orders.length === 1}
-            excludeFruit={[]}
+            excludeFruit={["Solbær"]}
           />
         ))}
 
