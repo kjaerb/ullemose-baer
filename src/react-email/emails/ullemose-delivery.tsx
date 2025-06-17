@@ -90,19 +90,33 @@ export default function UllemoseDelivery({
 
             <Row>
               <Column style={halfWidth}>
-                <Text style={flexCenterBold}>Bær</Text>
+                <Text style={{
+                  display: "flex",
+  fontWeight: "bold",
+  textWrap: "nowrap",
+  justifyContent: "center",
+                }}>Bær</Text>
               </Column>
               <Column style={halfWidth}>
-                <Text style={flexCenterBold}>Kg</Text>
+                <Text style={{
+                  display: "flex",
+  fontWeight: "bold",
+  textWrap: "nowrap",
+  justifyContent: "center",
+                }}>Kg</Text>
               </Column>
             </Row>
             {order.fruitOrder.map((fruit, i) => (
               <Row key={i}>
                 <Column style={halfWidth}>
-                  <Text style={noWrap}>{fruit.name}</Text>
+                  <Text style={{textWrap: "nowrap",
+  display: "flex",
+  justifyContent: "center",}}>{fruit.name}</Text>
                 </Column>
                 <Column style={halfWidth}>
-                  <Text style={noWrap}>{fruit.kg} Kg</Text>
+                  <Text style={{textWrap: "nowrap",
+  display: "flex",
+  justifyContent: "center",}}>{fruit.kg} Kg</Text>
                 </Column>
               </Row>
             ))}
