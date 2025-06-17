@@ -39,7 +39,7 @@ export function Overview({ orders }: OverviewProps) {
         Bestillinger: ordersOnDay.length,
         Indtægt: ordersOnDay.reduce((total, order) => {
           const kgSum = order.fruitOrder.reduce(
-            (sum, fruit) => sum + fruit.kg * 20,
+            (sum, fruit) => sum + fruit.kg * 30,
             0
           );
           return total + kgSum;
@@ -89,7 +89,7 @@ export function Overview({ orders }: OverviewProps) {
             className: "h-36",
           }}
         >
-          {totalKilos * 20} kr
+          {totalKilos * 30} kr
         </KPICard>
         <KPICard
           title="Kilo"

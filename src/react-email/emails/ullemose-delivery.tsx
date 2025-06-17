@@ -1,4 +1,4 @@
-import { FirebaseOrder, Order } from "@/validators/orderSchema";
+import { FirebaseOrder } from "@/validators/orderSchema";
 import {
   Body,
   Column,
