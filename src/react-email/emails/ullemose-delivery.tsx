@@ -44,25 +44,13 @@ export default function UllemoseDelivery({
   solbaerDeliveryDay = "",
   ribsDeliveryDay = "",
 }: UllemoseEmailProps) {
-  const replyEmail = process.env.NEXT_PUBLIC_EMAIL;
-
-  function getDeliveryDate(): string {
-    const hasRibs = order.fruitOrder.filter((fruit) => fruit.name === "Ribs");
-
-    if (hasRibs.length > 0) {
-      return ribsDeliveryDay;
-    } else {
-      return solbaerDeliveryDay;
-    }
-  }
-
   return (
     <Html>
       <Head />
       <Body style={main}>
         <Container style={container}>
           <Img
-            src="https://www.ullemose.dk/CustomerData/Files/Templates/1/logo.png"
+            src="https://ullemose.dk/cdn/shop/files/ullemose_frugt-removebg-preview.png?v=1726497449&width=460"
             alt="Ullemose frugt"
             className="mx-auto"
           />
@@ -75,13 +63,19 @@ export default function UllemoseDelivery({
               Vi gør klar til høst og du kan snart hente din ordre
             </Text>
             <Text style={paragraph}>
-              Der er to afhentningsdage, alt efter hvilke bær du har bestilt.
-              Solbær kan hentes d. 27. Juli og ribs kan hentes d. 28. Juli.
               Afhentningen er i vores gårdbutik på Hovvej 7, 5883 Oure.
             </Text>
             <Text style={paragraph}>
-              Afhentnings dato:{" "}
-              {new Date(getDeliveryDate()).toLocaleDateString("da-DK", {
+              Afhentnings dato for solbær:{" "}
+              {new Date(solbaerDeliveryDay).toLocaleDateString("da-DK", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })}
+            </Text>
+             <Text style={paragraph}>
+              Afhentnings dato for ribs:{" "}
+              {new Date(ribsDeliveryDay).toLocaleDateString("da-DK", {
                 day: "2-digit",
                 month: "2-digit",
                 year: "numeric",
@@ -118,7 +112,7 @@ export default function UllemoseDelivery({
             <Text style={paragraph}>
               Hvis du har nogle spørgsmål til din ordre, er du velkommen til at
               skrive en mail til{" "}
-              <Link href={`mailto:${replyEmail}`} style={bluetext}>
+              <Link href={`mailto:ullemosefrugt@gmail.com`} style={bluetext}>
                 ullemosefrugt@gmail.com
               </Link>
               .

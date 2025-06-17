@@ -24,11 +24,11 @@ export async function POST(request: Request) {
         })
     
         if (error) {
-          console.log(error);
-          return Response.json({ error }, { status: 500 });
-        }
-    
-        return Response.json(data)
+      console.log(error);
+      return new Response(JSON.stringify({ data: "error" }), { status: 500 });
+    }
+
+    return new Response(JSON.stringify({ data }))
   } catch (error) {
     console.error(error);
     return new Response(

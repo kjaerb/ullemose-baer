@@ -37,7 +37,7 @@ export function Dashboard({}: DashboardProps) {
           </SelectTrigger>
           <SelectContent>
             {years.map((option) => (
-              <SelectItem value={option.toString()}>
+              <SelectItem value={option.toString()} key={option}>
                 {option.toString()}
               </SelectItem>
             ))}

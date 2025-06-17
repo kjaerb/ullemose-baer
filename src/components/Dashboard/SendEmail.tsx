@@ -138,7 +138,7 @@ export function SendEmail({ orders }: SendEmailProps) {
                   />
                 </div>
                 <div>
-                  <p>Dato for solbær og ribs</p>
+                  <p>Dato for og ribs</p>
                   <Input
                     type="date"
                     value={ribsDeliveryDay}

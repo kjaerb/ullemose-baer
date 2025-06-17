@@ -157,30 +157,37 @@ export function EmailTable<TValue>({ columns, data }: EmailTableProps<TValue>) {
   }
 
   async function sendBulkEmails(orders: FirebaseOrder[]) {
-    const sendEmailPromises = orders.map(
-      async (order) => await sendEmail(order, false)
-    );
-    setIsSendingEmailLoading(true);
-    try {
-      await Promise.all(sendEmailPromises);
+  const BATCH_SIZE = 10;
+  const DELAY_MS = 1000; // 1 second
 
-      toast({
-        title: "Emails sent",
-        description: "Emails sent to " + orders.length + " people",
-        variant: "success",
-      });
-      closeEmailBtn.current?.click();
-    } catch (error) {
-      console.error("Error sending bulk emails:", error);
-      toast({
-        title: "Fejl ved afsendelse af emails",
-        description: "Emails blev ikke sendt",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSendingEmailLoading(false);
+  setIsSendingEmailLoading(true);
+
+  try {
+    for (let i = 0; i < orders.length; i += BATCH_SIZE) {
+      const batch = orders.slice(i, i + BATCH_SIZE);
+      await Promise.all(batch.map(order => sendEmail(order, false)));
+      if (i + BATCH_SIZE < orders.length) {
+        await new Promise(resolve => setTimeout(resolve, DELAY_MS)); // Wait 1 second before next batch
+      }
     }
+
+    toast({
+      title: "Emails sent",
+      description: `Emails sent to ${orders.length} people`,
+      variant: "success",
+    });
+    closeEmailBtn.current?.click();
+  } catch (error) {
+    console.error("Error sending bulk emails:", error);
+    toast({
+      title: "Fejl ved afsendelse af emails",
+      description: "Emails blev ikke sendt",
+      variant: "destructive",
+    });
+  } finally {
+    setIsSendingEmailLoading(false);
   }
+}
 
   return (
     <>
