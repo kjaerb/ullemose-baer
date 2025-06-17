@@ -41,7 +41,7 @@ export default function UllemoseEmail({
       <Body style={main}>
         <Container style={container}>
           <Img
-            src="https://www.ullemose.dk/CustomerData/Files/Templates/1/logo.png"
+            src="https://ullemose.dk/cdn/shop/files/ullemose_frugt-removebg-preview.png?v=1726497449&width=460"
             alt="Ullemose frugt"
             className="mx-auto"
           />

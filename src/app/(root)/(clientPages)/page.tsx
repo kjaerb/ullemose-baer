@@ -1,6 +1,7 @@
 import { Form } from "@/components/Form/Form";
+import { Metadata } from "next/types";
 
-const metadata = {
+const metadata: Metadata = {
   title: "Ullemose bær",
 };
 

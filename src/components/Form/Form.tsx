@@ -57,17 +57,11 @@ export function Form() {
 
         <div className="mx-auto flex flex-col items-center">
           <h2 className="text-xl font-semibold">Frugtbestilling</h2>
-          <p className="font-bold text-center py-2">
-            I år tegner desværre ikke til at være det bedste solbær år, derfor
-            har vi lukket for bestilling af solbær. Det er stadig muligt at
-            bestille ribs. Hvis vi ender med at have flere solbær end forventet,
-            vil det være muligt at købe i vores gårdbutik.
-          </p>
           <p className="text-sm">
             Du kan godt lave flere bestillinger på samme bær
           </p>
           <p className="text-sm">
-            Prisen er 20kr pr kg. Minimum bestilling er 5kg.
+            Prisen er 30kr pr kg. Minimum bestilling er 5kg.
           </p>
         </div>
 
@@ -80,7 +74,7 @@ export function Form() {
             kgName={`fruitOrder.${i}.kg`}
             remove={remove}
             canDelete={orders.length === 1}
-            excludeFruit={["Solbær"]}
+            excludeFruit={[]}
           />
         ))}
 

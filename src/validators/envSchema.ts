@@ -10,7 +10,7 @@ const envSchema = z.object({
   NEXT_PUBLIC_APP_ID: z.string(),
   NEXT_PUBLIC_MEASUREMENT_ID: z.string(),
   NEXT_PUBLIC_EMAIL: z.string(),
-  EMAIL_PASSWORD: z.string(),
+  RESEND_API_KEY: z.string(),
 });
 
 envSchema.parse(process.env);

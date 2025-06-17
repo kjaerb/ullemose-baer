@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
-import useOrderStore, { periodOptions, yearOptions } from "@/store/orderStore";
+import useOrderStore, { periodOptions, years } from "@/store/orderStore";
 
 interface DashboardProps {}
 
@@ -36,9 +36,9 @@ export function Dashboard({}: DashboardProps) {
             <SelectValue placeholder="År" defaultValue={year} />
           </SelectTrigger>
           <SelectContent>
-            {yearOptions.map((option) => (
-              <SelectItem value={option.value.toString()}>
-                {option.label}
+            {years.map((option) => (
+              <SelectItem value={option.toString()}>
+                {option.toString()}
               </SelectItem>
             ))}
           </SelectContent>

@@ -1,11 +1,5 @@
-import transporter from "@/lib/nodemailer";
+import { defaultEmailConfig, resend } from "@/lib/resend";
 import { sendConfirmationEmailSchema } from "@/validators/sendConfirmationEmail";
-import { NextRequest, NextResponse } from "next/server";
-import Mail from "nodemailer/lib/mailer";
-
-export async function GET() {
-  return NextResponse.json("Nice get request!");
-}
 
 export async function POST(request: Request) {
   try {
@@ -19,18 +13,19 @@ export async function POST(request: Request) {
 
     const { to, html } = confirmationEmailBody.data;
 
-    if (process.env.NODE_ENV === "production") {
-      const mailOptions: Mail.Options = {
-        from: process.env.NEXT_PUBLIC_EMAIL,
-        to,
-        subject: "Tak for din bestilling",
-        html,
-      };
+    const {data, error} = await resend.emails.send({
+      ...defaultEmailConfig,
+      to,
+      subject: "Tak for din bestilling",
+      html,
+    })
 
-      await transporter.sendMail(mailOptions);
+    if (error) {
+      console.log(error);
+      return Response.json({ error }, { status: 500 });
     }
 
-    return new Response(JSON.stringify({ data: "success" }));
+    return Response.json(data)
   } catch (error) {
     console.error(error);
     return new Response(

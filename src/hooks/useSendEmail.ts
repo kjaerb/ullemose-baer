@@ -1,8 +1,10 @@
 import { ConfirmationEmail } from "@/validators/sendConfirmationEmail";
 import axios from "axios";
 
+type EmailApiEndpoints = "/api/sendConfirmationEmail" | "/api/sendDeliveryEmail";
+
 interface SendEmailProps {
-  api: string;
+  api: EmailApiEndpoints;
   to: string;
   html: string;
 }

@@ -6,22 +6,23 @@ export const periodOptions = [
   { value: 90, label: "3 måneder" },
 ];
 
-export const yearOptions = [
-  { value: 2023, label: 2023 },
-  { value: 2024, label: 2024 },
-];
+const currentYear = new Date().getFullYear();
+const startYear = 2023;
+
+export const years = Array.from({ length: currentYear - startYear + 1 }, (_, i) => startYear + i);
+
 
 interface OrderStore {
   period: (typeof periodOptions)[number]["value"];
   setPeriod: (period: number) => void;
-  year: (typeof yearOptions)[number]["value"];
+  year: number;
   setYear: (year: number) => void;
 }
 
 const useOrderStore = create<OrderStore>((set) => ({
   period: 7,
   setPeriod: (period) => set({ period }),
-  year: new Date().getFullYear(),
+  year: years[years.length - 1],
   setYear: (year) => set({ year }),
 }));
 

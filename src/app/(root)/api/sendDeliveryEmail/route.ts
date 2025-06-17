@@ -1,6 +1,5 @@
-import transporter from "@/lib/nodemailer";
+import { defaultEmailConfig, resend } from "@/lib/resend";
 import { sendDeliveryEmail } from "@/validators/sendDeliveryEmail";
-import Mail from "nodemailer/lib/mailer";
 
 export async function POST(request: Request) {
   try {
@@ -16,16 +15,20 @@ export async function POST(request: Request) {
 
     const { to, html } = sendDeliveryEmailBody.data;
 
-    const mailOptions: Mail.Options = {
-      from: process.env.NEXT_PUBLIC_EMAIL,
-      to,
-      subject: "Afhentning af bær",
-      html,
-    };
 
-    await transporter.sendMail(mailOptions);
-
-    return new Response(JSON.stringify({ data: to }));
+    const {data, error} = await resend.emails.send({
+          ...defaultEmailConfig,
+          to,
+          subject: "Afhentning af bær",
+          html,
+        })
+    
+        if (error) {
+          console.log(error);
+          return Response.json({ error }, { status: 500 });
+        }
+    
+        return Response.json(data)
   } catch (error) {
     console.error(error);
     return new Response(
