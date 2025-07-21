@@ -42,7 +42,6 @@ export function useGetOrders() {
   const [ordersCollection, ordersLoading, ordersError] = useCollection(
     query(
       collection(firestore, "orders"),
-      orderBy("createdAt", "desc"),
       where("createdAt", ">=", new Date(year, 0, 1)),
       where("createdAt", "<=", new Date(year, 11, 31))
     )
@@ -54,7 +53,7 @@ export function useGetOrders() {
 
   if (!ordersCollection) return [];
 
-  return ordersCollection.docs.map((doc) => {
+  const orders = ordersCollection.docs.map((doc) => {
     const data = doc.data();
     const id = doc.id;
 
@@ -63,4 +62,10 @@ export function useGetOrders() {
       id,
     } as FirebaseOrder;
   });
+
+  return orders.sort((a, b) => {
+    return (b.contactInfo.firstName + b.contactInfo.lastName).localeCompare(
+      a.contactInfo.firstName + a.contactInfo.lastName
+    );
+  })
 }
